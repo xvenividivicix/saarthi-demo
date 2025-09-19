@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>SAARTHI — Terminology & FHIR Demo</title>
 
-    <!-- Tailwind -->
+    
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- React 18 UMD + Babel for JSX (no build step needed) -->
+    
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -75,7 +75,7 @@
     <script type="text/babel" data-presets="react">
       const { useEffect, useRef, useState } = React;
 
-      // ---------- Utilities ----------
+      
       function getInitialApi() {
         const qs = new URLSearchParams(location.search).get('api');
         if (qs) return qs;
@@ -118,7 +118,7 @@
       }
       function toNDJSON(arr){ return arr.map(x=>JSON.stringify(x)).join("\n"); }
 
-      // naive category detection on display text
+      
       function categorize(display="") {
         const d = display.toLowerCase();
         if (/(angina|myocard|heart|cad|hypertension|cholesterol|atrial|afib|stroke|dvt|pe|thrombo)/.test(d)) return "Cardiology";
@@ -136,17 +136,17 @@
         return "Other";
       }
 
-      // ---------- UI atoms ----------
+      
       function CodeBlock({ data }) {
         const text = typeof data === "string" ? data : JSON.stringify(data, null, 2);
         return <pre className="mono text-xs bg-slate-50 border border-slate-200 rounded-xl p-3 overflow-auto max-h-96 whitespace-pre-wrap">{String(text)}</pre>;
       }
 
-      // ---------- App ----------
+      
       function App() {
         const { msg, show } = useToast();
 
-        // API settings
+        
         const [apiBase, setApiBase] = useState(getInitialApi());
         const [pingOk, setPingOk] = useState(false);
         useEffect(() => {
@@ -386,7 +386,7 @@
                 ) : null}
               </div>
 
-              <!-- VALIDATION -->
+              
               <div className="card space-y-3">
                 <div className="flex items-center justify-between">
                   <h2 className="section-title">Validation List</h2>
