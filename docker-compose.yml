@@ -1,0 +1,11 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - "8000:8000"
+  ui:
+    build: ./ui
+    ports:
+      - "5173:5173"
+    environment:
+      - API_BASE=http://localhost:8000

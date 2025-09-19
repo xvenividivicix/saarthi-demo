@@ -1,0 +1,194 @@
+{
+  "source": "namaste-terms",
+  "target": "urn:icd:icd11:tm",
+  "mappings": [
+    {
+      "sourceCode": "NAM-001",
+      "targetCode": "TM2-0001",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-002",
+      "targetCode": "TM2-0002",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-003",
+      "targetCode": "TM2-0003",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-004",
+      "targetCode": "TM2-0004",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-005",
+      "targetCode": "TM2-0005",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-006",
+      "targetCode": "TM2-0006",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-007",
+      "targetCode": "TM2-0007",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-008",
+      "targetCode": "TM2-0008",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-009",
+      "targetCode": "TM2-0009",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-PROC-001",
+      "targetCode": "TM2-PROC-003",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-PROC-002",
+      "targetCode": "TM2-PROC-004",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-PROC-003",
+      "targetCode": "TM2-PROC-005",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-PROC-004",
+      "targetCode": "TM2-PROC-006",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-PROC-005",
+      "targetCode": "TM2-PROC-007",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-THER-001",
+      "targetCode": "TM2-THER-001",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-010",
+      "targetCode": "TM2-0010",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-011",
+      "targetCode": "TM2-0011",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-012",
+      "targetCode": "TM2-0012",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-013",
+      "targetCode": "TM2-0013",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-014",
+      "targetCode": "TM2-0014",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-015",
+      "targetCode": "TM2-0015",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-016",
+      "targetCode": "TM2-0016",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-017",
+      "targetCode": "TM2-0017",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-PROC-006",
+      "targetCode": "TM2-PROC-008",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-PROC-007",
+      "targetCode": "TM2-PROC-009",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-PROC-008",
+      "targetCode": "TM2-PROC-010",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-THER-002",
+      "targetCode": "TM2-THER-002",
+      "relation": "equivalent"
+    }
+  ],
+  "group": [
+    {
+      "source": "namaste-terms",
+      "target": "icd11:tm",
+      "element": [
+        {
+          "code": "tridosha jwara",
+          "target": [
+            {
+              "code": "TM2-0004",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "agantu jwara",
+          "target": [
+            {
+              "code": "TM2-0005",
+              "equivalence": "wider"
+            }
+          ]
+        },
+        {
+          "code": "rasayana chikitsa",
+          "target": [
+            {
+              "code": "TM2-PROC-003",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "sattva chikitsa",
+          "target": [
+            {
+              "code": "TM2-PROC-004",
+              "equivalence": "equivalent"
+            }
+          ]
+        },
+        {
+          "code": "pathya ahara",
+          "target": [
+            {
+              "code": "TM2-PROC-005",
+              "equivalence": "narrower"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

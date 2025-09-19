@@ -1,0 +1,59 @@
+{
+  "id": "vs-ayush-demo-2025-05",
+  "system": "urn:icd:icd11:tm",
+  "includes": [
+    "TM2-0001",
+    "TM2-0002",
+    "TM2-0003",
+    "TM2-0006",
+    "TM2-0007",
+    "TM2-0008",
+    "TM2-0009",
+    "TM2-0010",
+    "TM2-0011",
+    "TM2-0012",
+    "TM2-0013",
+    "TM2-0014",
+    "TM2-0015",
+    "TM2-0016",
+    "TM2-0017",
+    "TM2-PROC-001",
+    "TM2-PROC-002",
+    "TM2-PROC-006",
+    "TM2-PROC-007",
+    "TM2-PROC-008",
+    "TM2-PROC-009",
+    "TM2-PROC-010",
+    "TM2-THER-001",
+    "TM2-THER-002"
+  ],
+  "compose": {
+    "include": [
+      {
+        "system": "urn:icd:icd11:tm",
+        "concept": [
+          {
+            "code": "TM2-0004",
+            "display": "Tridoshaja Jwara"
+          },
+          {
+            "code": "TM2-0005",
+            "display": "Agantuja Jwara"
+          },
+          {
+            "code": "TM2-PROC-003",
+            "display": "Rasayana Therapy"
+          },
+          {
+            "code": "TM2-PROC-004",
+            "display": "Sattvavajaya Chikitsa"
+          },
+          {
+            "code": "TM2-PROC-005",
+            "display": "Diet Therapy"
+          }
+        ]
+      }
+    ]
+  }
+}

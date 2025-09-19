@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SAARTHI Starter UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="importmap">
+      { "imports": { "react": "https://esm.sh/react@18", "react-dom/client": "https://esm.sh/react-dom@18/client" } }
+    </script>
+    <style>
+      .card { background:white; border-radius:16px; box-shadow: 0 6px 24px rgba(0,0,0,0.07); padding: 24px; border: 1px solid #eef2f7; }
+      .btn { display:inline-flex; align-items:center; justify-content:center; border-radius:12px; padding:8px 14px; font-weight:600; border:1px solid #e5e7eb; }
+      .btn-primary { background:#2563eb; color:white; border-color:#1d4ed8; }
+      .btn-outline { background:white; color:#374151; }
+      .badge { display:inline-flex; align-items:center; gap:6px; padding:2px 8px; border-radius:999px; font-size:12px; background:#f3f4f6; color:#374151; }
+      .input { width:100%; border:1px solid #d1d5db; border-radius:12px; padding:10px 12px; outline:none; }
+      .input:focus { box-shadow:0 0 0 3px rgba(37,99,235,0.25); border-color:#2563eb; }
+      .label { font-size:14px; font-weight:600; color:#374151; margin-bottom:6px; display:block; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+    </style>
+  </head>
+  <body class="bg-slate-50">
+    <div id="root"></div>
+    <script type="module">
+      import React, { useState } from "react";
+      import { createRoot } from "react-dom/client";
+      const API_BASE = (new URLSearchParams(location.search).get('api')) || 'http://localhost:8000';
+
+      const CodeBlock = ({data}) => (
+        <pre className="mono text-xs bg-slate-900 text-slate-100 p-4 rounded-xl overflow-auto max-h-72">{JSON.stringify(data,null,2)}</pre>
+      );
+
+      function App(){
+        const [chiefComplaint, setChief] = useState("fever, body ache");
+        const [diagnosisText, setDx] = useState("Vataja Jwara");
+        const [therapyText, setTx] = useState("Shamana chikitsa");
+        const [auto, setAuto] = useState(null);
+        const [valid, setValid] = useState(null);
+        const [bundle, setBundle] = useState(null);
+        const [roundtrip, setRoundtrip] = useState(null);
+        const [loading, setLoading] = useState(false);
+        const [error, setError] = useState("");
+
+        async function call(path, opts){
+          setLoading(true); setError("");
+          try{
+            const res = await fetch(API_BASE + path, {headers: {"Content-Type":"application/json"}, ...opts});
+            if(!res.ok) throw new Error("HTTP " + res.status);
+            return await res.json();
+          }catch(e){ setError(e.message); return null; } finally { setLoading(false); }
+        }
+
+        async function doAutocode(){
+          const payload = { encounter: { patientRef: "patient-123", encounterRef:"enc-789",
+            chiefComplaint, diagnosisText, therapyText, observations:[{code:"temp", value:"38.2 C"}],
+            context: { system:"urn:icd:icd11:tm", language:"en-IN" } } };
+          const data = await call("/autocode", {method:"POST", body: JSON.stringify(payload)});
+          setAuto(data);
+        }
+        async function doValidate(){
+          if(!auto) return;
+          const codes = [...(auto?.conditions||[]).map(x=>x.code), ...(auto?.procedures||[]).map(x=>x.code)];
+          const data = await call("/codes/validate", {method:"POST", body: JSON.stringify({system:"urn:icd:icd11:tm", codes, valueSet:"vs-ayush-demo-2025-05"})});
+          setValid(data);
+        }
+        async function doExport(){
+          const conds = (auto?.conditions||[]).slice(0,1).map(x=>({code:x.code, display:x.display, system:"urn:icd:icd11:tm"}));
+          const procs = (auto?.procedures||[]).slice(0,1).map(x=>({code:x.code, display:x.display, system:"urn:icd:icd11:tm"}));
+          const data = await call("/export/fhir/bundle", {method:"POST", body: JSON.stringify({patientRef:"patient-123", encounterRef:"enc-789", conditions:conds, procedures:procs, observations:[{code:"temp", value:"38.2 C"}]})});
+          setBundle(data);
+        }
+        async function doImport(){ if(!bundle) return; const data = await call("/import/fhir/bundle", {method:"POST", body: JSON.stringify(bundle)}); setRoundtrip(data); }
+
+        return (
+          <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
+            <header className="flex items-center justify-between">
+              <div>
+                <div className="text-xs font-bold text-blue-600 uppercase tracking-wider">SAARTHI</div>
+                <h1 className="text-3xl font-extrabold text-slate-900">AYUSH Coding & FHIR Starter UI</h1>
+                <p className="text-slate-600">API: <span className="badge">{API_BASE}</span></p>
+              </div>
+              <a className="btn btn-outline" href="http://localhost:8000/docs" target="_blank">Open Swagger →</a>
+            </header>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="card">
+                <h2 className="text-xl font-bold mb-3">Encounter Input</h2>
+                <label className="label">Chief Complaint</label>
+                <input className="input mb-3" value={chiefComplaint} onChange={e=>setChief(e.target.value)}/>
+                <label className="label">Diagnosis Text</label>
+                <input className="input mb-3" value={diagnosisText} onChange={e=>setDx(e.target.value)}/>
+                <label className="label">Therapy Text</label>
+                <input className="input mb-3" value={therapyText} onChange={e=>setTx(e.target.value)}/>
+                <div className="flex gap-2">
+                  <button className="btn btn-primary" onClick={doAutocode} disabled={loading}>Auto-code</button>
+                  <button className="btn" onClick={async ()=>{
+                    const q = prompt("Search text for codes (e.g., 'Vataja Jwara')"); if(!q) return;
+                    const data = await call(`/codes/search?text=${encodeURIComponent(q)}`);
+                    alert("Top match: " + (data?.[0]?.display || "None"));
+                  }}>Search Codes</button>
+                </div>
+              </div>
+
+              <div className="card">
+                <h2 className="text-xl font-bold mb-3">Code Suggestions</h2>
+                {auto ? <CodeBlock data={auto}/> : <p className="text-slate-500">Run Auto-code to see suggestions.</p>}
+                <div className="mt-3">
+                  <button className="btn btn-primary" onClick={doValidate} disabled={loading || !auto}>Validate Codes</button>
+                </div>
+              </div>
+
+              <div className="card">
+                <h2 className="text-xl font-bold mb-3">Validation Result</h2>
+                {valid ? <CodeBlock data={valid}/> : <p className="text-slate-500">Validate to see ValueSet checks.</p>}
+                <div className="mt-3">
+                  <button className="btn btn-primary" onClick={doExport} disabled={loading || !valid}>Export FHIR Bundle</button>
+                </div>
+              </div>
+
+              <div className="card">
+                <h2 className="text-xl font-bold mb-3">FHIR Bundle & Round-trip</h2>
+                {bundle ? <CodeBlock data={bundle}/> : <p className="text-slate-500">Export FHIR to view JSON output.</p>}
+                <div className="mt-3 flex gap-2">
+                  <button className="btn btn-primary" onClick={doImport} disabled={loading || !bundle}>Import FHIR</button>
+                  <button className="btn" onClick={()=>{
+                    const blob = new Blob([JSON.stringify(bundle,null,2)], {type:"application/json"});
+                    const url = URL.createObjectURL(blob); const a = document.createElement('a');
+                    a.href = url; a.download = "saarthi-fhir-bundle.json"; a.click(); URL.revokeObjectURL(url);
+                  }} disabled={!bundle}>Download JSON</button>
+                </div>
+                {roundtrip && <div className="mt-3"><div className="badge">Round-trip parsed</div><CodeBlock data={roundtrip}/></div>}
+              </div>
+            </div>
+
+            {error && <div className="bg-red-50 text-red-700 border border-red-200 rounded-xl p-3">{error}</div>}
+            <footer className="text-xs text-slate-500">© SAARTHI Starter Kit — Demo subset for evaluation only</footer>
+          </div>
+        );
+      }
+      createRoot(document.getElementById("root")).render(<App/>);
+    </script>
+  </body>
+</html>

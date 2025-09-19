@@ -1,0 +1,263 @@
+{
+  "codes": [
+    {
+      "code": "TM2-0001",
+      "display": "Vataja Jwara",
+      "system": "urn:icd:icd11:tm",
+      "synonyms": [
+        "vata jwara",
+        "vataja fever"
+      ]
+    },
+    {
+      "code": "TM2-0002",
+      "display": "Pittaja Jwara",
+      "system": "urn:icd:icd11:tm",
+      "synonyms": [
+        "pitta jwara",
+        "pittaja fever"
+      ]
+    },
+    {
+      "code": "TM2-0003",
+      "display": "Kaphaja Jwara",
+      "system": "urn:icd:icd11:tm",
+      "synonyms": [
+        "kapha jwara",
+        "kaphaja fever"
+      ]
+    },
+    {
+      "code": "TM2-PROC-001",
+      "display": "Shamana Therapy",
+      "system": "urn:icd:icd11:tm",
+      "synonyms": [
+        "shamana chikitsa",
+        "palliative therapy"
+      ]
+    },
+    {
+      "code": "TM2-PROC-002",
+      "display": "Shodhana Therapy",
+      "system": "urn:icd:icd11:tm",
+      "synonyms": [
+        "panchakarma",
+        "detox therapy"
+      ]
+    },
+    {
+      "code": "TM2-0004",
+      "display": "Tridoshaja Jwara",
+      "system": "urn:icd:icd11:tm",
+      "synonyms": [
+        "tridosha jwara",
+        "fever due to all doshas"
+      ]
+    },
+    {
+      "code": "TM2-0005",
+      "display": "Agantuja Jwara",
+      "system": "urn:icd:icd11:tm",
+      "synonyms": [
+        "external cause fever",
+        "agantu jwara"
+      ]
+    },
+    {
+      "code": "TM2-PROC-003",
+      "display": "Rasayana Therapy",
+      "system": "urn:icd:icd11:tm",
+      "synonyms": [
+        "rejuvenation therapy",
+        "rasayana chikitsa"
+      ]
+    },
+    {
+      "code": "TM2-PROC-004",
+      "display": "Sattvavajaya Chikitsa",
+      "system": "urn:icd:icd11:tm",
+      "synonyms": [
+        "mental health therapy",
+        "sattva chikitsa"
+      ]
+    },
+    {
+      "code": "TM2-PROC-005",
+      "display": "Diet Therapy",
+      "system": "urn:icd:icd11:tm",
+      "synonyms": [
+        "pathya ahara",
+        "customized diet"
+      ]
+    },
+    {
+      "code": "TM2-0006",
+      "display": "Prameha",
+      "synonyms": [
+        "prameh",
+        "metabolic disorder"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0007",
+      "display": "Arsha",
+      "synonyms": [
+        "arsh",
+        "hemorrhoids"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0008",
+      "display": "Kasa",
+      "synonyms": [
+        "kaasa",
+        "cough disorder"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0009",
+      "display": "Shwasa",
+      "synonyms": [
+        "shvaasa",
+        "respiratory dyspnea"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-PROC-006",
+      "display": "Nasya Karma",
+      "synonyms": [
+        "nasya",
+        "nasal instillation"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-PROC-007",
+      "display": "Raktamokshana",
+      "synonyms": [
+        "bloodletting",
+        "rakta mokshana"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-THER-001",
+      "display": "Rasayana Therapy",
+      "synonyms": [
+        "rasayana chikitsa",
+        "rejuvenation therapy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0010",
+      "display": "Shleepada",
+      "synonyms": [
+        "filariasis",
+        "elephantiasis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0011",
+      "display": "Udavarta",
+      "synonyms": [
+        "reverse peristalsis",
+        "udavart"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0012",
+      "display": "Visarpa",
+      "synonyms": [
+        "erysipelas",
+        "cellulitis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0013",
+      "display": "Bhagandara",
+      "synonyms": [
+        "fistula-in-ano"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0014",
+      "display": "Pakshaghata",
+      "synonyms": [
+        "hemiplegia",
+        "paralysis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0015",
+      "display": "Apasmara",
+      "synonyms": [
+        "epilepsy",
+        "seizure disorder"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0016",
+      "display": "Ardita",
+      "synonyms": [
+        "facial palsy",
+        "bell’s palsy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0017",
+      "display": "Grahani",
+      "synonyms": [
+        "IBS",
+        "malabsorption syndrome"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-PROC-008",
+      "display": "Abhyanga",
+      "synonyms": [
+        "oil massage therapy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-PROC-009",
+      "display": "Swedana",
+      "synonyms": [
+        "fomentation",
+        "steam therapy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-PROC-010",
+      "display": "Shirodhara",
+      "synonyms": [
+        "oil drip therapy",
+        "shiro dhara"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-THER-002",
+      "display": "Sattvavajaya Chikitsa",
+      "synonyms": [
+        "psychotherapy",
+        "mind therapy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    }
+  ]
+}
