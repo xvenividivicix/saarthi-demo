@@ -9641,6 +9641,77 @@
       ],
       "category": "Procedure/Therapy",
       "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-20001",
+      "display": "Common cold (Acute nasopharyngitis)",
+      "synonyms": ["common cold", "acute nasopharyngitis", "viral URI", "URTI", "upper respiratory infection", "runny nose", "rhinorrhea", "nasal congestion", "viral rhinitis", "head cold"],
+      "category": "Respiratory",
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-20002",
+      "display": "Acute upper respiratory infection, unspecified",
+      "synonyms": ["acute URI", "URTI", "upper respiratory tract infection", "viral URI unspecified"],
+      "category": "Respiratory",
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-20003",
+      "display": "Acute viral rhinitis",
+      "synonyms": ["viral rhinitis", "infective rhinitis", "common cold variant"],
+      "category": "Respiratory",
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-20004",
+      "display": "Acute bronchitis",
+      "synonyms": ["chest cold", "viral bronchitis"],
+      "category": "Respiratory",
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-20005",
+      "display": "Acute laryngitis",
+      "synonyms": ["hoarseness", "voice loss due to laryngitis"],
+      "category": "Respiratory",
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-20006",
+      "display": "Croup (Laryngotracheobronchitis)",
+      "synonyms": ["croup", "laryngotracheobronchitis", "barking cough"],
+      "category": "Respiratory",
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-20007",
+      "display": "Bronchiolitis (viral)",
+      "synonyms": ["RSV bronchiolitis", "infant bronchiolitis"],
+      "category": "Respiratory",
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-20008",
+      "display": "Pertussis (Whooping cough)",
+      "synonyms": ["whooping cough", "Bordetella pertussis"],
+      "category": "Respiratory",
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-20009",
+      "display": "Streptococcal pharyngitis (Strep throat)",
+      "synonyms": ["strep throat", "group A strep pharyngitis", "GAS pharyngitis"],
+      "category": "ENT",
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-20010",
+      "display": "Viral conjunctivitis",
+      "synonyms": ["pink eye (viral)", "infective conjunctivitis"],
+      "category": "ENT",
+      "system": "urn:icd:icd11:tm"
     }
+    
   ]
 }

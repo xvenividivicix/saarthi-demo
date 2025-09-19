@@ -4443,6 +4443,17 @@
       "sourceCode": "NAM-00888",
       "targetCode": "TMX-THER-10887",
       "relation": "equivalent"
-    }
+    },
+    { "sourceCode": "NAM-92001", "targetCode": "TMX-DIS-20001", "relation": "equivalent" },
+{ "sourceCode": "NAM-92002", "targetCode": "TMX-DIS-20002", "relation": "equivalent" },
+{ "sourceCode": "NAM-92003", "targetCode": "TMX-DIS-20003", "relation": "equivalent" },
+{ "sourceCode": "NAM-92004", "targetCode": "TMX-DIS-20004", "relation": "equivalent" },
+{ "sourceCode": "NAM-92005", "targetCode": "TMX-DIS-20005", "relation": "equivalent" },
+{ "sourceCode": "NAM-92006", "targetCode": "TMX-DIS-20006", "relation": "equivalent" },
+{ "sourceCode": "NAM-92007", "targetCode": "TMX-DIS-20007", "relation": "equivalent" },
+{ "sourceCode": "NAM-92008", "targetCode": "TMX-DIS-20008", "relation": "equivalent" },
+{ "sourceCode": "NAM-92009", "targetCode": "TMX-DIS-20009", "relation": "equivalent" },
+{ "sourceCode": "NAM-92010", "targetCode": "TMX-DIS-20010", "relation": "equivalent" }
+
   ]
 }
