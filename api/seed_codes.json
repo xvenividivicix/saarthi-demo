@@ -1,94 +1,1485 @@
 {
   "codes": [
     {
-      "code": "TM2-0001",
-      "display": "Vataja Jwara",
-      "system": "urn:icd:icd11:tm",
+      "code": "TMX-DIS-1001",
+      "display": "Hypertension",
       "synonyms": [
-        "vata jwara",
-        "vataja fever"
-      ]
+        "high blood pressure",
+        "HTN"
+      ],
+      "system": "urn:icd:icd11:tm"
     },
     {
-      "code": "TM2-0002",
-      "display": "Pittaja Jwara",
-      "system": "urn:icd:icd11:tm",
+      "code": "TMX-DIS-1002",
+      "display": "Diabetes mellitus type 2",
       "synonyms": [
-        "pitta jwara",
-        "pittaja fever"
-      ]
+        "type 2 diabetes",
+        "T2DM",
+        "adult-onset diabetes"
+      ],
+      "system": "urn:icd:icd11:tm"
     },
     {
-      "code": "TM2-0003",
-      "display": "Kaphaja Jwara",
-      "system": "urn:icd:icd11:tm",
+      "code": "TMX-DIS-1003",
+      "display": "Diabetes mellitus type 1",
       "synonyms": [
-        "kapha jwara",
-        "kaphaja fever"
-      ]
+        "type 1 diabetes",
+        "T1DM",
+        "juvenile diabetes"
+      ],
+      "system": "urn:icd:icd11:tm"
     },
     {
-      "code": "TM2-PROC-001",
-      "display": "Shamana Therapy",
-      "system": "urn:icd:icd11:tm",
+      "code": "TMX-DIS-1004",
+      "display": "Ischemic heart disease",
       "synonyms": [
-        "shamana chikitsa",
-        "palliative therapy"
-      ]
+        "coronary artery disease",
+        "CAD",
+        "IHD",
+        "angina"
+      ],
+      "system": "urn:icd:icd11:tm"
     },
     {
-      "code": "TM2-PROC-002",
-      "display": "Shodhana Therapy",
-      "system": "urn:icd:icd11:tm",
+      "code": "TMX-DIS-1005",
+      "display": "Myocardial infarction",
       "synonyms": [
-        "panchakarma",
-        "detox therapy"
-      ]
+        "heart attack",
+        "MI",
+        "acute coronary syndrome"
+      ],
+      "system": "urn:icd:icd11:tm"
     },
     {
-      "code": "TM2-0004",
-      "display": "Tridoshaja Jwara",
-      "system": "urn:icd:icd11:tm",
+      "code": "TMX-DIS-1006",
+      "display": "Heart failure",
       "synonyms": [
-        "tridosha jwara",
-        "fever due to all doshas"
-      ]
+        "congestive heart failure",
+        "CHF"
+      ],
+      "system": "urn:icd:icd11:tm"
     },
     {
-      "code": "TM2-0005",
-      "display": "Agantuja Jwara",
-      "system": "urn:icd:icd11:tm",
+      "code": "TMX-DIS-1007",
+      "display": "Atrial fibrillation",
       "synonyms": [
-        "external cause fever",
-        "agantu jwara"
-      ]
+        "AFib",
+        "atrial fib"
+      ],
+      "system": "urn:icd:icd11:tm"
     },
     {
-      "code": "TM2-PROC-003",
+      "code": "TMX-DIS-1008",
+      "display": "Hyperlipidemia",
+      "synonyms": [
+        "dyslipidemia",
+        "high cholesterol"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1009",
+      "display": "Stroke",
+      "synonyms": [
+        "cerebrovascular accident",
+        "CVA"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1010",
+      "display": "Transient ischemic attack",
+      "synonyms": [
+        "TIA",
+        "mini stroke"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1011",
+      "display": "Asthma",
+      "synonyms": [
+        "bronchial asthma",
+        "reactive airway disease"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1012",
+      "display": "Chronic obstructive pulmonary disease",
+      "synonyms": [
+        "COPD",
+        "chronic bronchitis",
+        "emphysema"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1013",
+      "display": "Pneumonia",
+      "synonyms": [
+        "lung infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1014",
+      "display": "Tuberculosis",
+      "synonyms": [
+        "TB",
+        "pulmonary TB"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1015",
+      "display": "COVID-19",
+      "synonyms": [
+        "coronavirus disease",
+        "SARS-CoV-2 infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1016",
+      "display": "Influenza",
+      "synonyms": [
+        "flu",
+        "seasonal flu"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1017",
+      "display": "Allergic rhinitis",
+      "synonyms": [
+        "hay fever",
+        "nasal allergy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1018",
+      "display": "Sinusitis",
+      "synonyms": [
+        "rhinosinusitis",
+        "sinus infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1019",
+      "display": "Otitis media",
+      "synonyms": [
+        "ear infection",
+        "middle ear infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1020",
+      "display": "Pharyngitis",
+      "synonyms": [
+        "sore throat"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1021",
+      "display": "Tonsillitis",
+      "synonyms": [
+        "inflamed tonsils"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1022",
+      "display": "Gastroesophageal reflux disease",
+      "synonyms": [
+        "GERD",
+        "acid reflux",
+        "heartburn"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1023",
+      "display": "Peptic ulcer disease",
+      "synonyms": [
+        "PUD",
+        "gastric ulcer",
+        "duodenal ulcer"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1024",
+      "display": "Irritable bowel syndrome",
+      "synonyms": [
+        "IBS",
+        "spastic colon"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1025",
+      "display": "Inflammatory bowel disease",
+      "synonyms": [
+        "IBD",
+        "ulcerative colitis",
+        "Crohn's disease"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1026",
+      "display": "Appendicitis",
+      "synonyms": [
+        "appendix inflammation"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1027",
+      "display": "Cholelithiasis",
+      "synonyms": [
+        "gallstones"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1028",
+      "display": "Cholecystitis",
+      "synonyms": [
+        "gallbladder infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1029",
+      "display": "Pancreatitis",
+      "synonyms": [
+        "inflamed pancreas"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1030",
+      "display": "Hepatitis A",
+      "synonyms": [
+        "HAV infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1031",
+      "display": "Hepatitis B",
+      "synonyms": [
+        "HBV infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1032",
+      "display": "Hepatitis C",
+      "synonyms": [
+        "HCV infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1033",
+      "display": "Cirrhosis of liver",
+      "synonyms": [
+        "liver cirrhosis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1034",
+      "display": "Fatty liver disease",
+      "synonyms": [
+        "NAFLD",
+        "nonalcoholic fatty liver disease",
+        "MAFLD"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1035",
+      "display": "Typhoid fever",
+      "synonyms": [
+        "enteric fever",
+        "salmonella typhi"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1036",
+      "display": "Malaria",
+      "synonyms": [
+        "plasmodium infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1037",
+      "display": "Dengue fever",
+      "synonyms": [
+        "dengue",
+        "breakbone fever"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1038",
+      "display": "Chikungunya",
+      "synonyms": [
+        "CHIKV infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1039",
+      "display": "Leptospirosis",
+      "synonyms": [
+        "leptospira infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1040",
+      "display": "Urinary tract infection",
+      "synonyms": [
+        "UTI"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1041",
+      "display": "Pyelonephritis",
+      "synonyms": [
+        "kidney infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1042",
+      "display": "Benign prostatic hyperplasia",
+      "synonyms": [
+        "BPH",
+        "enlarged prostate"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1043",
+      "display": "Chronic kidney disease",
+      "synonyms": [
+        "CKD",
+        "renal failure",
+        "chronic renal disease"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1044",
+      "display": "Nephrolithiasis",
+      "synonyms": [
+        "kidney stones",
+        "renal calculi"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1045",
+      "display": "Anemia iron deficiency",
+      "synonyms": [
+        "IDA",
+        "iron deficiency anemia"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1046",
+      "display": "Vitamin B12 deficiency anemia",
+      "synonyms": [
+        "pernicious anemia (non-classic)",
+        "megaloblastic anemia"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1047",
+      "display": "Folate deficiency anemia",
+      "synonyms": [
+        "megaloblastic anemia (folate)"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1048",
+      "display": "Hypothyroidism",
+      "synonyms": [
+        "underactive thyroid"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1049",
+      "display": "Hyperthyroidism",
+      "synonyms": [
+        "overactive thyroid",
+        "thyrotoxicosis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1050",
+      "display": "Obesity",
+      "synonyms": [
+        "overweight"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1051",
+      "display": "Malnutrition",
+      "synonyms": [
+        "undernutrition"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1052",
+      "display": "Polycystic ovary syndrome",
+      "synonyms": [
+        "PCOS",
+        "stein–leventhal syndrome"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1053",
+      "display": "Pelvic inflammatory disease",
+      "synonyms": [
+        "PID"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1054",
+      "display": "Dysmenorrhea",
+      "synonyms": [
+        "painful periods"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1055",
+      "display": "Endometriosis",
+      "synonyms": [
+        "endometrial implants"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1056",
+      "display": "Pregnancy",
+      "synonyms": [
+        "gestation"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1057",
+      "display": "Gestational diabetes",
+      "synonyms": [
+        "GDM"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1058",
+      "display": "Preeclampsia",
+      "synonyms": [
+        "pregnancy-induced hypertension",
+        "PIH"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1059",
+      "display": "Migraine",
+      "synonyms": [
+        "migraine headache"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1060",
+      "display": "Tension-type headache",
+      "synonyms": [
+        "TTH"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1061",
+      "display": "Epilepsy",
+      "synonyms": [
+        "seizure disorder"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1062",
+      "display": "Depression",
+      "synonyms": [
+        "major depressive disorder",
+        "MDD"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1063",
+      "display": "Anxiety disorder",
+      "synonyms": [
+        "GAD",
+        "generalized anxiety disorder"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1064",
+      "display": "Panic disorder",
+      "synonyms": [
+        "panic attacks"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1065",
+      "display": "Bipolar disorder",
+      "synonyms": [
+        "manic depression"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1066",
+      "display": "Schizophrenia",
+      "synonyms": [
+        "psychotic disorder"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1067",
+      "display": "Autism spectrum disorder",
+      "synonyms": [
+        "ASD"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1068",
+      "display": "Attention-deficit hyperactivity disorder",
+      "synonyms": [
+        "ADHD"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1069",
+      "display": "Low back pain",
+      "synonyms": [
+        "lumbago"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1070",
+      "display": "Cervical spondylosis",
+      "synonyms": [
+        "neck spondylosis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1071",
+      "display": "Osteoarthritis",
+      "synonyms": [
+        "OA",
+        "degenerative joint disease"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1072",
+      "display": "Rheumatoid arthritis",
+      "synonyms": [
+        "RA"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1073",
+      "display": "Gout",
+      "synonyms": [
+        "gouty arthritis",
+        "hyperuricemia arthritis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1074",
+      "display": "Osteoporosis",
+      "synonyms": [
+        "low bone density"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1075",
+      "display": "Dermatitis atopic",
+      "synonyms": [
+        "eczema",
+        "atopic dermatitis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1076",
+      "display": "Psoriasis",
+      "synonyms": [
+        "psoriatic plaques"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1077",
+      "display": "Urticaria",
+      "synonyms": [
+        "hives"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1078",
+      "display": "Acne vulgaris",
+      "synonyms": [
+        "pimples",
+        "acne"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1079",
+      "display": "Cellulitis",
+      "synonyms": [
+        "skin infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1080",
+      "display": "Herpes zoster",
+      "synonyms": [
+        "shingles"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1081",
+      "display": "Herpes simplex",
+      "synonyms": [
+        "cold sores",
+        "genital herpes"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1082",
+      "display": "Varicella",
+      "synonyms": [
+        "chickenpox"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1083",
+      "display": "Measles",
+      "synonyms": [
+        "rubeola"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1084",
+      "display": "Mumps",
+      "synonyms": [
+        "epidemic parotitis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1085",
+      "display": "Rubella",
+      "synonyms": [
+        "German measles"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1086",
+      "display": "Otitis externa",
+      "synonyms": [
+        "swimmer's ear"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1087",
+      "display": "Conjunctivitis",
+      "synonyms": [
+        "pink eye",
+        "eye infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1088",
+      "display": "Cataract",
+      "synonyms": [
+        "lens opacity"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1089",
+      "display": "Glaucoma",
+      "synonyms": [
+        "raised intraocular pressure"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1090",
+      "display": "Allergic conjunctivitis",
+      "synonyms": [
+        "eye allergy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1091",
+      "display": "Sinus headache",
+      "synonyms": [
+        "sinus pain"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1092",
+      "display": "Bronchitis acute",
+      "synonyms": [
+        "chest cold"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1093",
+      "display": "Bronchiectasis",
+      "synonyms": [
+        "chronic airway dilation"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1094",
+      "display": "Sleep apnea obstructive",
+      "synonyms": [
+        "OSA"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1095",
+      "display": " GERD with esophagitis",
+      "synonyms": [
+        "reflux esophagitis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1096",
+      "display": "Hemorrhoids",
+      "synonyms": [
+        "piles"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1097",
+      "display": "Anal fissure",
+      "synonyms": [
+        "fissure-in-ano"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1098",
+      "display": "Varicose veins",
+      "synonyms": [
+        "varicosities"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1099",
+      "display": "Deep vein thrombosis",
+      "synonyms": [
+        "DVT"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1100",
+      "display": "Pulmonary embolism",
+      "synonyms": [
+        "PE"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1101",
+      "display": "Allergic dermatitis contact",
+      "synonyms": [
+        "contact dermatitis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1102",
+      "display": "Scabies",
+      "synonyms": [
+        "sarcoptes infestation"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1103",
+      "display": "Tinea corporis",
+      "synonyms": [
+        "ringworm"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1104",
+      "display": "Tinea pedis",
+      "synonyms": [
+        "athlete's foot"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1105",
+      "display": "Tinea cruris",
+      "synonyms": [
+        "jock itch"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1106",
+      "display": "Urinary incontinence stress",
+      "synonyms": [
+        "stress incontinence"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1107",
+      "display": "Urinary incontinence urge",
+      "synonyms": [
+        "urge incontinence"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1108",
+      "display": "GERD with laryngitis",
+      "synonyms": [
+        "laryngopharyngeal reflux",
+        "LPR"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1109",
+      "display": "Viral gastroenteritis",
+      "synonyms": [
+        "stomach flu"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1110",
+      "display": "Bacterial gastroenteritis",
+      "synonyms": [
+        "food poisoning"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1111",
+      "display": "Dehydration",
+      "synonyms": [
+        "volume depletion"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1112",
+      "display": "Anxiety with insomnia",
+      "synonyms": [
+        "sleep anxiety"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1113",
+      "display": "Insomnia primary",
+      "synonyms": [
+        "sleeplessness"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1114",
+      "display": "Substance use alcohol",
+      "synonyms": [
+        "alcohol use disorder",
+        "AUD"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1115",
+      "display": "Substance use tobacco",
+      "synonyms": [
+        "tobacco dependence",
+        "nicotine dependence"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1116",
+      "display": "Allergic asthma",
+      "synonyms": [
+        "atopic asthma"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1117",
+      "display": "Bronchiolitis",
+      "synonyms": [
+        "RSV bronchiolitis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1118",
+      "display": "Whooping cough",
+      "synonyms": [
+        "pertussis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1119",
+      "display": "Otitis media with effusion",
+      "synonyms": [
+        "glue ear"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1120",
+      "display": "Croup",
+      "synonyms": [
+        "laryngotracheobronchitis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1121",
+      "display": "Anemia chronic disease",
+      "synonyms": [
+        "anemia of chronic disease"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1122",
+      "display": "Thalassemia trait",
+      "synonyms": [
+        "beta thal trait"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1123",
+      "display": "Sickle cell disease",
+      "synonyms": [
+        "SCD"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1124",
+      "display": "Hypocalcemia",
+      "synonyms": [
+        "low calcium"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1125",
+      "display": "Hyperkalemia",
+      "synonyms": [
+        "high potassium"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1126",
+      "display": "Hyponatremia",
+      "synonyms": [
+        "low sodium"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1127",
+      "display": "Hypernatremia",
+      "synonyms": [
+        "high sodium"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1128",
+      "display": "Hypoglycemia",
+      "synonyms": [
+        "low blood sugar"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1129",
+      "display": "Hyperglycemia",
+      "synonyms": [
+        "high blood sugar"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1130",
+      "display": "Acute kidney injury",
+      "synonyms": [
+        "AKI"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1131",
+      "display": "Gastroenteritis amoebic",
+      "synonyms": [
+        "amoebiasis",
+        "entamoeba histolytica"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1132",
+      "display": "Giardiasis",
+      "synonyms": [
+        "giardia infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1133",
+      "display": "Helicobacter pylori infection",
+      "synonyms": [
+        "H. pylori"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1134",
+      "display": "Allergic reaction anaphylaxis",
+      "synonyms": [
+        "anaphylactic shock"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1135",
+      "display": "Atopic march",
+      "synonyms": [
+        "eczema-asthma-allergy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1136",
+      "display": "PCOS with insulin resistance",
+      "synonyms": [
+        "PCOS IR"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1137",
+      "display": "Menorrhagia",
+      "synonyms": [
+        "heavy menstrual bleeding"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1138",
+      "display": "Fibroids uterus",
+      "synonyms": [
+        "leiomyoma"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1139",
+      "display": "Cervicitis",
+      "synonyms": [
+        "cervical infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1140",
+      "display": "Bacterial vaginosis",
+      "synonyms": [
+        "BV"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1141",
+      "display": "Candidiasis vulvovaginal",
+      "synonyms": [
+        "yeast infection"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1142",
+      "display": "Prostatitis",
+      "synonyms": [
+        "prostate inflammation"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1143",
+      "display": "Nonalcoholic steatohepatitis",
+      "synonyms": [
+        "NASH"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1144",
+      "display": "Acute viral hepatitis",
+      "synonyms": [
+        "acute hepatitis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1145",
+      "display": "Irritable bladder",
+      "synonyms": [
+        "overactive bladder"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1146",
+      "display": "Plantar fasciitis",
+      "synonyms": [
+        "heel pain"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1147",
+      "display": "Tendinitis",
+      "synonyms": [
+        "tendonitis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1148",
+      "display": "Carpal tunnel syndrome",
+      "synonyms": [
+        "CTS"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1149",
+      "display": "Sciatica",
+      "synonyms": [
+        "radicular low back pain"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1150",
+      "display": "Bursitis",
+      "synonyms": [
+        "joint bursa inflammation"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1151",
+      "display": "Frozen shoulder",
+      "synonyms": [
+        "adhesive capsulitis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1152",
+      "display": "Allergic urticaria chronic",
+      "synonyms": [
+        "chronic hives"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-DIS-1153",
+      "display": "Allergic angioedema",
+      "synonyms": [
+        "angio-oedema"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1154",
+      "display": "Vamana Karma",
+      "synonyms": [
+        "therapeutic emesis",
+        "vamana"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1155",
+      "display": "Virechana Karma",
+      "synonyms": [
+        "therapeutic purgation",
+        "virechana"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1156",
+      "display": "Basti Karma",
+      "synonyms": [
+        "medicated enema",
+        "basti"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1157",
+      "display": "Nasya Karma",
+      "synonyms": [
+        "nasal instillation",
+        "nasya"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1158",
+      "display": "Raktamokshana",
+      "synonyms": [
+        "bloodletting"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1159",
+      "display": "Abhyanga",
+      "synonyms": [
+        "oil massage therapy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1160",
+      "display": "Swedana",
+      "synonyms": [
+        "steam therapy",
+        "fomentation"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1161",
+      "display": "Shirodhara",
+      "synonyms": [
+        "oil drip therapy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1162",
+      "display": "Kati Basti",
+      "synonyms": [
+        "lumbar oil pooling"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1163",
+      "display": "Janu Basti",
+      "synonyms": [
+        "knee oil pooling"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1164",
+      "display": "Netra Tarpana",
+      "synonyms": [
+        "eye oleation"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1165",
+      "display": "Pizhichil",
+      "synonyms": [
+        "oil bath"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1166",
+      "display": "Urovasti",
+      "synonyms": [
+        "chest oil pooling"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1167",
+      "display": "Agnikarma",
+      "synonyms": [
+        "cauterization therapy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-PROC-1168",
+      "display": "Leech therapy",
+      "synonyms": [
+        "hirudotherapy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-THER-1169",
       "display": "Rasayana Therapy",
-      "system": "urn:icd:icd11:tm",
       "synonyms": [
         "rejuvenation therapy",
         "rasayana chikitsa"
-      ]
+      ],
+      "system": "urn:icd:icd11:tm"
     },
     {
-      "code": "TM2-PROC-004",
+      "code": "TMX-THER-1170",
       "display": "Sattvavajaya Chikitsa",
-      "system": "urn:icd:icd11:tm",
       "synonyms": [
-        "mental health therapy",
-        "sattva chikitsa"
-      ]
+        "mind therapy",
+        "psychotherapy in ayurveda"
+      ],
+      "system": "urn:icd:icd11:tm"
     },
     {
-      "code": "TM2-PROC-005",
-      "display": "Diet Therapy",
-      "system": "urn:icd:icd11:tm",
+      "code": "TMX-THER-1171",
+      "display": "Dietary counseling",
       "synonyms": [
-        "pathya ahara",
-        "customized diet"
-      ]
+        "medical nutrition therapy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-THER-1172",
+      "display": "Physiotherapy",
+      "synonyms": [
+        "physical therapy"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-THER-1173",
+      "display": "Cognitive behavioral therapy",
+      "synonyms": [
+        "CBT"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-THER-1174",
+      "display": "Smoking cessation program",
+      "synonyms": [
+        "tobacco de-addiction"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TMX-THER-1175",
+      "display": "Exercise therapy",
+      "synonyms": [
+        "fitness plan"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0004",
+      "display": "Amlapitta",
+      "synonyms": [
+        "amla pitta",
+        "acid peptic disorder"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-0005",
+      "display": "Sandhivata",
+      "synonyms": [
+        "sandhi vata",
+        "degenerative joint disorder"
+      ],
+      "system": "urn:icd:icd11:tm"
     },
     {
       "code": "TM2-0006",
@@ -121,8 +1512,34 @@
       "code": "TM2-0009",
       "display": "Shwasa",
       "synonyms": [
-        "shvaasa",
         "respiratory dyspnea"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-PROC-003",
+      "display": "Vamana Karma",
+      "synonyms": [
+        "vamana",
+        "therapeutic emesis"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-PROC-004",
+      "display": "Virechana Karma",
+      "synonyms": [
+        "virechana",
+        "therapeutic purgation"
+      ],
+      "system": "urn:icd:icd11:tm"
+    },
+    {
+      "code": "TM2-PROC-005",
+      "display": "Basti Karma",
+      "synonyms": [
+        "basti",
+        "medicated enema"
       ],
       "system": "urn:icd:icd11:tm"
     },
@@ -150,112 +1567,6 @@
       "synonyms": [
         "rasayana chikitsa",
         "rejuvenation therapy"
-      ],
-      "system": "urn:icd:icd11:tm"
-    },
-    {
-      "code": "TM2-0010",
-      "display": "Shleepada",
-      "synonyms": [
-        "filariasis",
-        "elephantiasis"
-      ],
-      "system": "urn:icd:icd11:tm"
-    },
-    {
-      "code": "TM2-0011",
-      "display": "Udavarta",
-      "synonyms": [
-        "reverse peristalsis",
-        "udavart"
-      ],
-      "system": "urn:icd:icd11:tm"
-    },
-    {
-      "code": "TM2-0012",
-      "display": "Visarpa",
-      "synonyms": [
-        "erysipelas",
-        "cellulitis"
-      ],
-      "system": "urn:icd:icd11:tm"
-    },
-    {
-      "code": "TM2-0013",
-      "display": "Bhagandara",
-      "synonyms": [
-        "fistula-in-ano"
-      ],
-      "system": "urn:icd:icd11:tm"
-    },
-    {
-      "code": "TM2-0014",
-      "display": "Pakshaghata",
-      "synonyms": [
-        "hemiplegia",
-        "paralysis"
-      ],
-      "system": "urn:icd:icd11:tm"
-    },
-    {
-      "code": "TM2-0015",
-      "display": "Apasmara",
-      "synonyms": [
-        "epilepsy",
-        "seizure disorder"
-      ],
-      "system": "urn:icd:icd11:tm"
-    },
-    {
-      "code": "TM2-0016",
-      "display": "Ardita",
-      "synonyms": [
-        "facial palsy",
-        "bell’s palsy"
-      ],
-      "system": "urn:icd:icd11:tm"
-    },
-    {
-      "code": "TM2-0017",
-      "display": "Grahani",
-      "synonyms": [
-        "IBS",
-        "malabsorption syndrome"
-      ],
-      "system": "urn:icd:icd11:tm"
-    },
-    {
-      "code": "TM2-PROC-008",
-      "display": "Abhyanga",
-      "synonyms": [
-        "oil massage therapy"
-      ],
-      "system": "urn:icd:icd11:tm"
-    },
-    {
-      "code": "TM2-PROC-009",
-      "display": "Swedana",
-      "synonyms": [
-        "fomentation",
-        "steam therapy"
-      ],
-      "system": "urn:icd:icd11:tm"
-    },
-    {
-      "code": "TM2-PROC-010",
-      "display": "Shirodhara",
-      "synonyms": [
-        "oil drip therapy",
-        "shiro dhara"
-      ],
-      "system": "urn:icd:icd11:tm"
-    },
-    {
-      "code": "TM2-THER-002",
-      "display": "Sattvavajaya Chikitsa",
-      "synonyms": [
-        "psychotherapy",
-        "mind therapy"
       ],
       "system": "urn:icd:icd11:tm"
     }

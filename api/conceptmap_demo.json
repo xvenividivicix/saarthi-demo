@@ -1,194 +1,943 @@
 {
-  "source": "namaste-terms",
-  "target": "urn:icd:icd11:tm",
+  "resourceType": "ConceptMap",
+  "id": "demo-conceptmap",
+  "name": "Demo ConceptMap (1:1 NAM to TMX/TM2)",
+  "status": "draft",
   "mappings": [
     {
-      "sourceCode": "NAM-001",
-      "targetCode": "TM2-0001",
+      "sourceCode": "NAM-2001",
+      "targetCode": "TMX-DIS-1001",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-002",
-      "targetCode": "TM2-0002",
+      "sourceCode": "NAM-2002",
+      "targetCode": "TMX-DIS-1002",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-003",
-      "targetCode": "TM2-0003",
+      "sourceCode": "NAM-2003",
+      "targetCode": "TMX-DIS-1003",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-004",
+      "sourceCode": "NAM-2004",
+      "targetCode": "TMX-DIS-1004",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2005",
+      "targetCode": "TMX-DIS-1005",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2006",
+      "targetCode": "TMX-DIS-1006",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2007",
+      "targetCode": "TMX-DIS-1007",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2008",
+      "targetCode": "TMX-DIS-1008",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2009",
+      "targetCode": "TMX-DIS-1009",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2010",
+      "targetCode": "TMX-DIS-1010",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2011",
+      "targetCode": "TMX-DIS-1011",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2012",
+      "targetCode": "TMX-DIS-1012",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2013",
+      "targetCode": "TMX-DIS-1013",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2014",
+      "targetCode": "TMX-DIS-1014",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2015",
+      "targetCode": "TMX-DIS-1015",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2016",
+      "targetCode": "TMX-DIS-1016",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2017",
+      "targetCode": "TMX-DIS-1017",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2018",
+      "targetCode": "TMX-DIS-1018",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2019",
+      "targetCode": "TMX-DIS-1019",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2020",
+      "targetCode": "TMX-DIS-1020",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2021",
+      "targetCode": "TMX-DIS-1021",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2022",
+      "targetCode": "TMX-DIS-1022",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2023",
+      "targetCode": "TMX-DIS-1023",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2024",
+      "targetCode": "TMX-DIS-1024",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2025",
+      "targetCode": "TMX-DIS-1025",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2026",
+      "targetCode": "TMX-DIS-1026",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2027",
+      "targetCode": "TMX-DIS-1027",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2028",
+      "targetCode": "TMX-DIS-1028",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2029",
+      "targetCode": "TMX-DIS-1029",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2030",
+      "targetCode": "TMX-DIS-1030",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2031",
+      "targetCode": "TMX-DIS-1031",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2032",
+      "targetCode": "TMX-DIS-1032",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2033",
+      "targetCode": "TMX-DIS-1033",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2034",
+      "targetCode": "TMX-DIS-1034",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2035",
+      "targetCode": "TMX-DIS-1035",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2036",
+      "targetCode": "TMX-DIS-1036",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2037",
+      "targetCode": "TMX-DIS-1037",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2038",
+      "targetCode": "TMX-DIS-1038",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2039",
+      "targetCode": "TMX-DIS-1039",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2040",
+      "targetCode": "TMX-DIS-1040",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2041",
+      "targetCode": "TMX-DIS-1041",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2042",
+      "targetCode": "TMX-DIS-1042",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2043",
+      "targetCode": "TMX-DIS-1043",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2044",
+      "targetCode": "TMX-DIS-1044",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2045",
+      "targetCode": "TMX-DIS-1045",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2046",
+      "targetCode": "TMX-DIS-1046",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2047",
+      "targetCode": "TMX-DIS-1047",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2048",
+      "targetCode": "TMX-DIS-1048",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2049",
+      "targetCode": "TMX-DIS-1049",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2050",
+      "targetCode": "TMX-DIS-1050",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2051",
+      "targetCode": "TMX-DIS-1051",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2052",
+      "targetCode": "TMX-DIS-1052",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2053",
+      "targetCode": "TMX-DIS-1053",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2054",
+      "targetCode": "TMX-DIS-1054",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2055",
+      "targetCode": "TMX-DIS-1055",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2056",
+      "targetCode": "TMX-DIS-1056",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2057",
+      "targetCode": "TMX-DIS-1057",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2058",
+      "targetCode": "TMX-DIS-1058",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2059",
+      "targetCode": "TMX-DIS-1059",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2060",
+      "targetCode": "TMX-DIS-1060",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2061",
+      "targetCode": "TMX-DIS-1061",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2062",
+      "targetCode": "TMX-DIS-1062",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2063",
+      "targetCode": "TMX-DIS-1063",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2064",
+      "targetCode": "TMX-DIS-1064",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2065",
+      "targetCode": "TMX-DIS-1065",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2066",
+      "targetCode": "TMX-DIS-1066",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2067",
+      "targetCode": "TMX-DIS-1067",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2068",
+      "targetCode": "TMX-DIS-1068",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2069",
+      "targetCode": "TMX-DIS-1069",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2070",
+      "targetCode": "TMX-DIS-1070",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2071",
+      "targetCode": "TMX-DIS-1071",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2072",
+      "targetCode": "TMX-DIS-1072",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2073",
+      "targetCode": "TMX-DIS-1073",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2074",
+      "targetCode": "TMX-DIS-1074",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2075",
+      "targetCode": "TMX-DIS-1075",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2076",
+      "targetCode": "TMX-DIS-1076",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2077",
+      "targetCode": "TMX-DIS-1077",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2078",
+      "targetCode": "TMX-DIS-1078",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2079",
+      "targetCode": "TMX-DIS-1079",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2080",
+      "targetCode": "TMX-DIS-1080",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2081",
+      "targetCode": "TMX-DIS-1081",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2082",
+      "targetCode": "TMX-DIS-1082",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2083",
+      "targetCode": "TMX-DIS-1083",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2084",
+      "targetCode": "TMX-DIS-1084",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2085",
+      "targetCode": "TMX-DIS-1085",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2086",
+      "targetCode": "TMX-DIS-1086",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2087",
+      "targetCode": "TMX-DIS-1087",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2088",
+      "targetCode": "TMX-DIS-1088",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2089",
+      "targetCode": "TMX-DIS-1089",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2090",
+      "targetCode": "TMX-DIS-1090",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2091",
+      "targetCode": "TMX-DIS-1091",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2092",
+      "targetCode": "TMX-DIS-1092",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2093",
+      "targetCode": "TMX-DIS-1093",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2094",
+      "targetCode": "TMX-DIS-1094",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2095",
+      "targetCode": "TMX-DIS-1095",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2096",
+      "targetCode": "TMX-DIS-1096",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2097",
+      "targetCode": "TMX-DIS-1097",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2098",
+      "targetCode": "TMX-DIS-1098",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2099",
+      "targetCode": "TMX-DIS-1099",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2100",
+      "targetCode": "TMX-DIS-1100",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2101",
+      "targetCode": "TMX-DIS-1101",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2102",
+      "targetCode": "TMX-DIS-1102",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2103",
+      "targetCode": "TMX-DIS-1103",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2104",
+      "targetCode": "TMX-DIS-1104",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2105",
+      "targetCode": "TMX-DIS-1105",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2106",
+      "targetCode": "TMX-DIS-1106",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2107",
+      "targetCode": "TMX-DIS-1107",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2108",
+      "targetCode": "TMX-DIS-1108",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2109",
+      "targetCode": "TMX-DIS-1109",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2110",
+      "targetCode": "TMX-DIS-1110",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2111",
+      "targetCode": "TMX-DIS-1111",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2112",
+      "targetCode": "TMX-DIS-1112",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2113",
+      "targetCode": "TMX-DIS-1113",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2114",
+      "targetCode": "TMX-DIS-1114",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2115",
+      "targetCode": "TMX-DIS-1115",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2116",
+      "targetCode": "TMX-DIS-1116",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2117",
+      "targetCode": "TMX-DIS-1117",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2118",
+      "targetCode": "TMX-DIS-1118",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2119",
+      "targetCode": "TMX-DIS-1119",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2120",
+      "targetCode": "TMX-DIS-1120",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2121",
+      "targetCode": "TMX-DIS-1121",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2122",
+      "targetCode": "TMX-DIS-1122",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2123",
+      "targetCode": "TMX-DIS-1123",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2124",
+      "targetCode": "TMX-DIS-1124",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2125",
+      "targetCode": "TMX-DIS-1125",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2126",
+      "targetCode": "TMX-DIS-1126",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2127",
+      "targetCode": "TMX-DIS-1127",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2128",
+      "targetCode": "TMX-DIS-1128",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2129",
+      "targetCode": "TMX-DIS-1129",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2130",
+      "targetCode": "TMX-DIS-1130",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2131",
+      "targetCode": "TMX-DIS-1131",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2132",
+      "targetCode": "TMX-DIS-1132",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2133",
+      "targetCode": "TMX-DIS-1133",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2134",
+      "targetCode": "TMX-DIS-1134",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2135",
+      "targetCode": "TMX-DIS-1135",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2136",
+      "targetCode": "TMX-DIS-1136",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2137",
+      "targetCode": "TMX-DIS-1137",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2138",
+      "targetCode": "TMX-DIS-1138",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2139",
+      "targetCode": "TMX-DIS-1139",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2140",
+      "targetCode": "TMX-DIS-1140",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2141",
+      "targetCode": "TMX-DIS-1141",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2142",
+      "targetCode": "TMX-DIS-1142",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2143",
+      "targetCode": "TMX-DIS-1143",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2144",
+      "targetCode": "TMX-DIS-1144",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2145",
+      "targetCode": "TMX-DIS-1145",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2146",
+      "targetCode": "TMX-DIS-1146",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2147",
+      "targetCode": "TMX-DIS-1147",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2148",
+      "targetCode": "TMX-DIS-1148",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2149",
+      "targetCode": "TMX-DIS-1149",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2150",
+      "targetCode": "TMX-DIS-1150",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2151",
+      "targetCode": "TMX-DIS-1151",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2152",
+      "targetCode": "TMX-DIS-1152",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2153",
+      "targetCode": "TMX-DIS-1153",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2154",
+      "targetCode": "TMX-PROC-1154",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2155",
+      "targetCode": "TMX-PROC-1155",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2156",
+      "targetCode": "TMX-PROC-1156",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2157",
+      "targetCode": "TMX-PROC-1157",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2158",
+      "targetCode": "TMX-PROC-1158",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2159",
+      "targetCode": "TMX-PROC-1159",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2160",
+      "targetCode": "TMX-PROC-1160",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2161",
+      "targetCode": "TMX-PROC-1161",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2162",
+      "targetCode": "TMX-PROC-1162",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2163",
+      "targetCode": "TMX-PROC-1163",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2164",
+      "targetCode": "TMX-PROC-1164",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2165",
+      "targetCode": "TMX-PROC-1165",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2166",
+      "targetCode": "TMX-PROC-1166",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2167",
+      "targetCode": "TMX-PROC-1167",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2168",
+      "targetCode": "TMX-PROC-1168",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2169",
+      "targetCode": "TMX-THER-1169",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2170",
+      "targetCode": "TMX-THER-1170",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2171",
+      "targetCode": "TMX-THER-1171",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2172",
+      "targetCode": "TMX-THER-1172",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2173",
+      "targetCode": "TMX-THER-1173",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2174",
+      "targetCode": "TMX-THER-1174",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2175",
+      "targetCode": "TMX-THER-1175",
+      "relation": "equivalent"
+    },
+    {
+      "sourceCode": "NAM-2176",
       "targetCode": "TM2-0004",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-005",
+      "sourceCode": "NAM-2177",
       "targetCode": "TM2-0005",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-006",
+      "sourceCode": "NAM-2178",
       "targetCode": "TM2-0006",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-007",
+      "sourceCode": "NAM-2179",
       "targetCode": "TM2-0007",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-008",
+      "sourceCode": "NAM-2180",
       "targetCode": "TM2-0008",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-009",
+      "sourceCode": "NAM-2181",
       "targetCode": "TM2-0009",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-PROC-001",
+      "sourceCode": "NAM-2182",
       "targetCode": "TM2-PROC-003",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-PROC-002",
+      "sourceCode": "NAM-2183",
       "targetCode": "TM2-PROC-004",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-PROC-003",
+      "sourceCode": "NAM-2184",
       "targetCode": "TM2-PROC-005",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-PROC-004",
+      "sourceCode": "NAM-2185",
       "targetCode": "TM2-PROC-006",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-PROC-005",
+      "sourceCode": "NAM-2186",
       "targetCode": "TM2-PROC-007",
       "relation": "equivalent"
     },
     {
-      "sourceCode": "NAM-THER-001",
+      "sourceCode": "NAM-2187",
       "targetCode": "TM2-THER-001",
       "relation": "equivalent"
-    },
-    {
-      "sourceCode": "NAM-010",
-      "targetCode": "TM2-0010",
-      "relation": "equivalent"
-    },
-    {
-      "sourceCode": "NAM-011",
-      "targetCode": "TM2-0011",
-      "relation": "equivalent"
-    },
-    {
-      "sourceCode": "NAM-012",
-      "targetCode": "TM2-0012",
-      "relation": "equivalent"
-    },
-    {
-      "sourceCode": "NAM-013",
-      "targetCode": "TM2-0013",
-      "relation": "equivalent"
-    },
-    {
-      "sourceCode": "NAM-014",
-      "targetCode": "TM2-0014",
-      "relation": "equivalent"
-    },
-    {
-      "sourceCode": "NAM-015",
-      "targetCode": "TM2-0015",
-      "relation": "equivalent"
-    },
-    {
-      "sourceCode": "NAM-016",
-      "targetCode": "TM2-0016",
-      "relation": "equivalent"
-    },
-    {
-      "sourceCode": "NAM-017",
-      "targetCode": "TM2-0017",
-      "relation": "equivalent"
-    },
-    {
-      "sourceCode": "NAM-PROC-006",
-      "targetCode": "TM2-PROC-008",
-      "relation": "equivalent"
-    },
-    {
-      "sourceCode": "NAM-PROC-007",
-      "targetCode": "TM2-PROC-009",
-      "relation": "equivalent"
-    },
-    {
-      "sourceCode": "NAM-PROC-008",
-      "targetCode": "TM2-PROC-010",
-      "relation": "equivalent"
-    },
-    {
-      "sourceCode": "NAM-THER-002",
-      "targetCode": "TM2-THER-002",
-      "relation": "equivalent"
-    }
-  ],
-  "group": [
-    {
-      "source": "namaste-terms",
-      "target": "icd11:tm",
-      "element": [
-        {
-          "code": "tridosha jwara",
-          "target": [
-            {
-              "code": "TM2-0004",
-              "equivalence": "equivalent"
-            }
-          ]
-        },
-        {
-          "code": "agantu jwara",
-          "target": [
-            {
-              "code": "TM2-0005",
-              "equivalence": "wider"
-            }
-          ]
-        },
-        {
-          "code": "rasayana chikitsa",
-          "target": [
-            {
-              "code": "TM2-PROC-003",
-              "equivalence": "equivalent"
-            }
-          ]
-        },
-        {
-          "code": "sattva chikitsa",
-          "target": [
-            {
-              "code": "TM2-PROC-004",
-              "equivalence": "equivalent"
-            }
-          ]
-        },
-        {
-          "code": "pathya ahara",
-          "target": [
-            {
-              "code": "TM2-PROC-005",
-              "equivalence": "narrower"
-            }
-          ]
-        }
-      ]
     }
   ]
 }
