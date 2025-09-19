@@ -3,45 +3,39 @@
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>SAARTHI Starter UI</title>
+    <title>SAARTHI — Terminology & FHIR Demo</title>
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- React 18 UMD + Babel for JSX -->
+    <!-- React 18 UMD + Babel for JSX (no build step needed) -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
       :root {
-        --fg: #0f172a;
-        --muted: #475569;
-        --line: #e5e7eb;
-        --card: #ffffff;
-        --bg: #f8fafc;
-        --brand: #2563eb;
+        --fg:#0f172a; --muted:#475569; --line:#e5e7eb; --card:#fff; --bg:#f8fafc; --brand:#2563eb;
       }
-      body { color: var(--fg); background: var(--bg); }
-      .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
-      .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; font-weight:600; border-radius: 12px; border:1px solid var(--line); background:#fff; transition: all .15s; }
-      .btn:hover { transform: translateY(-1px); }
-      .btn-primary { background: var(--brand); color: #fff; border-color: #1d4ed8; }
-      .btn-ghost { background: #fff; }
+      body { color:var(--fg); background:var(--bg); }
+      .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; }
+      .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:9px 14px; font-weight:600; border-radius:12px; border:1px solid var(--line); background:#fff; transition:.15s; }
+      .btn:hover { transform:translateY(-1px); }
+      .btn-primary { background:var(--brand); color:#fff; border-color:#1d4ed8; }
+      .btn-ghost { background:#fff; }
       .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border:1px solid var(--line); border-radius:999px; font-size:12px; background:#f1f5f9; color:#334155; }
       .input { border:1px solid var(--line); border-radius:12px; padding:10px 12px; outline:none; width:100%; background:#fff; }
-      .input:focus { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,0.15); }
-      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+      .input:focus { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.15); }
+      .select { @apply input; }
+      .mono { font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; }
       .kbd { font-size:12px; background:#f1f5f9; border:1px solid var(--line); padding:2px 6px; border-radius:6px; }
-      .toolbar { display:flex; gap:10px; flex-wrap:wrap; }
-      .toast { position: fixed; right: 16px; bottom: 16px; background: #111827; color:#fff; padding: 12px 14px; border-radius:12px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
-      .link { color: var(--brand); text-decoration: underline; }
+      .toast { position:fixed; right:16px; bottom:16px; background:#111827; color:#fff; padding:12px 14px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.2); }
       .pill { display:inline-flex; gap:6px; align-items:center; padding:4px 10px; border:1px solid var(--line); border-radius:999px; background:#f8fafc; }
-      .list { display:flex; flex-direction:column; gap:8px; }
+      .ok { color:#16a34a; } .warn { color:#ca8a04; } .err { color:#dc2626; }
+      .table { width:100%; border-collapse:separate; border-spacing:0; }
+      .table th, .table td { text-align:left; font-size:12px; padding:8px 10px; border-bottom:1px solid #eef2f7; }
+      .table th { font-weight:700; color:#334155; }
       .row { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px; border:1px solid var(--line); border-radius:12px; background:#fff; }
-      .ok { color:#16a34a; }
-      .warn { color:#ca8a04; }
-      .err { color:#dc2626; }
     </style>
   </head>
   <body>
@@ -50,7 +44,7 @@
     <script type="text/babel" data-presets="react">
       const { useEffect, useMemo, useRef, useState } = React;
 
-      // API URL handling: ?api= override, else localStorage, else default
+      // ---------- Utilities ----------
       function getInitialApi() {
         const qs = new URLSearchParams(location.search).get('api');
         if (qs) return qs;
@@ -58,8 +52,6 @@
         if (saved) return saved;
         return "http://localhost:8000";
       }
-
-      // fetch helper — only add Content-Type on POST/PUT
       async function http(base, path, opts = {}) {
         const hasBody = typeof opts.body !== "undefined";
         const headers = hasBody ? { "Content-Type": "application/json" } : {};
@@ -72,63 +64,126 @@
         const ct = res.headers.get("content-type") || "";
         return ct.includes("application/json") ? res.json() : res.text();
       }
-
-      function CodeBlock({ data }) {
-        const text = typeof data === "string" ? data : JSON.stringify(data, null, 2);
-        return (
-          <pre className="mono text-xs bg-slate-50 border border-slate-200 rounded-xl p-3 overflow-auto max-h-96 whitespace-pre-wrap">
-{String(text)}
-          </pre>
-        );
-      }
-
       function useToast() {
         const [msg, setMsg] = useState("");
         function show(m) { setMsg(m); setTimeout(()=> setMsg(""), 3200); }
         return { msg, show };
       }
-
-      // simple debounce
-      function useDebounced(value, delay=300) {
+      function useDebounced(value, delay=350) {
         const [v, setV] = useState(value);
-        useEffect(() => {
-          const t = setTimeout(() => setV(value), delay);
-          return () => clearTimeout(t);
-        }, [value, delay]);
+        useEffect(()=>{ const t=setTimeout(()=>setV(value), delay); return ()=>clearTimeout(t); }, [value, delay]);
         return v;
       }
+      function downloadText(name, text, type="application/json") {
+        const blob = new Blob([text], { type });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = name; a.click();
+        URL.revokeObjectURL(url);
+      }
+      function toCSV(rows, header) {
+        const esc = s => `"${String(s??"").replace(/"/g,'""')}"`;
+        return [header.map(esc).join(","), ...rows.map(r=>header.map(h=>esc(r[h])).join(","))].join("\n");
+      }
+      function toNDJSON(arr){ return arr.map(x=>JSON.stringify(x)).join("\n"); }
 
+      // naive category detection on display text
+      function categorize(display="") {
+        const d = display.toLowerCase();
+        if (/(angina|myocard|heart|cad|hypertension|cholesterol|atrial|afib|stroke|dvt|pe|thrombo)/.test(d)) return "Cardiology";
+        if (/(diabetes|thyroid|obesity|pcos|endocr|hypo|hyperthy)/.test(d)) return "Endocrine";
+        if (/(asthma|copd|cough|pneumonia|tb|respir|swasa|kasa|bronch)/.test(d)) return "Respiratory";
+        if (/(gerd|ulcer|liver|hepat|pancrea|appendic|gall|ibs|ibd|gastr|chole)/.test(d)) return "Gastrointestinal";
+        if (/(ckd|kidney|uti|renal|nephro|prostat)/.test(d)) return "Renal/Uro";
+        if (/(migraine|epilep|stroke|parkinson|neuro|palsy|sciatica)/.test(d)) return "Neurology";
+        if (/(depress|anxiety|bipolar|schizo|autism|adhd|insomnia)/.test(d)) return "Psych";
+        if (/(arthritis|spond|back pain|osteop|gout|bursitis|tendin|frozen shoulder)/.test(d)) return "Ortho/MSK";
+        if (/(eczema|psoriasis|dermat|urticaria|tinea|acne|cellulitis|scabies)/.test(d)) return "Derm";
+        if (/(dengue|malaria|typhoid|covid|influenza|measles|mumps|rubella|lepto|tuberc)/.test(d)) return "Infectious";
+        if (/(pregnan|preeclampsia|endometri|pid|pcos|fibroids|gdm|dysmen)/.test(d)) return "Gyn/OB";
+        if (/(procedure|karma|therapy|basti|vamana|virechana|nasya|abhyanga|shirodhara|raktamok)/.test(d)) return "Procedure/Therapy";
+        return "Other";
+      }
+
+      // ---------- UI atoms ----------
+      function CodeBlock({ data }) {
+        const text = typeof data === "string" ? data : JSON.stringify(data, null, 2);
+        return <pre className="mono text-xs bg-slate-50 border border-slate-200 rounded-xl p-3 overflow-auto max-h-96 whitespace-pre-wrap">{String(text)}</pre>;
+      }
+
+      // ---------- App ----------
       function App() {
         const { msg, show } = useToast();
 
+        // API settings
         const [apiBase, setApiBase] = useState(getInitialApi());
         const [pingOk, setPingOk] = useState(false);
-
         useEffect(() => {
           localStorage.setItem("API_BASE", apiBase);
           fetch(apiBase + "/openapi.json").then(r => setPingOk(r.ok)).catch(()=> setPingOk(false));
         }, [apiBase]);
 
-        // Load reference data for validation
+        // Preload ValueSet & ConceptMap for exports and filters
         const [vs, setVs] = useState(null);
         const [cmap, setCmap] = useState(null);
         useEffect(() => {
-          // preload silently
           http(apiBase, "/valueset").then(setVs).catch(()=>{});
           http(apiBase, "/conceptmap").then(setCmap).catch(()=>{});
         }, [apiBase]);
 
-        // SEARCH (debounced)
+        // ---------- SEARCH + CATEGORY FILTER ----------
         const [q, setQ] = useState("");
         const dq = useDebounced(q, 350);
+        const [category, setCategory] = useState("All");
         const [codes, setCodes] = useState([]);
+
         useEffect(() => {
           if (!dq) { setCodes([]); return; }
           http(apiBase, `/codes/search?q=${encodeURIComponent(dq)}`)
-            .then(data => setCodes(data || []))
+            .then(data => {
+              const enriched = (data || []).map(c => ({...c, category: categorize(c.display||c.code)}));
+              setCodes(category==="All" ? enriched : enriched.filter(c => c.category===category));
+            })
             .catch(()=> setCodes([]));
-        }, [dq, apiBase]);
+        }, [dq, apiBase, category]);
 
+        const categories = ["All","Cardiology","Endocrine","Respiratory","Gastrointestinal","Renal/Uro","Neurology","Psych","Ortho/MSK","Derm","Infectious","Gyn/OB","Procedure/Therapy","Other"];
+
+        // ---------- VALIDATION LIST ----------
+        const [valList, setValList] = useState([]); // [{code, display, result?}]
+        function enqueueValidation(c){
+          setValList(prev => {
+            if (prev.find(x => x.code === c.code)) return prev; // no dup
+            return [...prev, { code: c.code, display: c.display, system: c.system }];
+          });
+          // auto-validate
+          http(apiBase, `/codes/validate?code=${encodeURIComponent(c.code)}`)
+            .then(res => setValList(prev => prev.map(x => x.code===c.code ? {...x, result:res} : x)))
+            .catch(()=> setValList(prev => prev.map(x => x.code===c.code ? {...x, result:{error:true}} : x)));
+        }
+        function validateAll(){
+          const work = [...valList];
+          Promise.all(work.map(item =>
+            http(apiBase, `/codes/validate?code=${encodeURIComponent(item.code)}`).then(r=>({code:item.code, r})).catch(()=>({code:item.code, r:{error:true}}))
+          )).then(results => {
+            setValList(prev => prev.map(x => {
+              const hit = results.find(y=>y.code===x.code); return hit ? {...x, result:hit.r} : x;
+            }));
+            show("Validation complete");
+          });
+        }
+        function removeVal(code){ setValList(prev => prev.filter(x=>x.code!==code)); }
+        function clearVal(){ setValList([]); }
+
+        // ---------- INSERT INTO BUNDLE (and auto-validate) ----------
+        const [bundleText, setBundleText] = useState(`{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    { "resource": { "resourceType": "Patient", "id": "pat-1" } },
+    { "resource": { "resourceType": "Encounter", "id": "enc-1" } }
+  ]
+}`);
         function insertIntoBundle(c) {
           try {
             const obj = JSON.parse(bundleText);
@@ -142,96 +197,98 @@
             const next = JSON.stringify(obj, null, 2);
             setBundleText(next);
             show(`Inserted ${c.code}`);
+            enqueueValidation(c); // <-- also add to validation list
           } catch {
             show("Bundle JSON invalid; cannot insert");
           }
         }
 
-        // VALIDATOR
-        const [codeToValidate, setCodeToValidate] = useState("");
-        const dCode = useDebounced(codeToValidate, 350);
-        const [valResult, setValResult] = useState(null);
-        useEffect(() => {
-          if (!dCode) { setValResult(null); return; }
-          http(apiBase, `/codes/validate?code=${encodeURIComponent(dCode)}`)
-            .then(setValResult)
-            .catch(()=> setValResult(null));
-        }, [dCode, apiBase]);
-
-        // BUNDLE editor
-        const [bundleText, setBundleText] = useState(`{
-  "resourceType": "Bundle",
-  "type": "collection",
-  "entry": [
-    { "resource": { "resourceType": "Patient", "id": "pat-1" } },
-    { "resource": { "resourceType": "Encounter", "id": "enc-1" } }
-  ]
-}`);
+        // ---------- BUNDLE SUMMARY ----------
         const [bundleSummary, setBundleSummary] = useState(null);
-
         async function summarizeBundle() {
           try {
             const obj = JSON.parse(bundleText);
-            const data = await http(apiBase, "/bundle/summary", { method: "POST", body: JSON.stringify(obj) });
+            const data = await http(apiBase, "/bundle/summary", { method:"POST", body: JSON.stringify(obj) });
             setBundleSummary(data);
             show("Bundle summarized");
           } catch (e) { show(e.message || "Invalid JSON"); }
         }
 
-        // Import + Download + Export
+        // ---------- IMPORT / DOWNLOAD / EXPORT ----------
         const fileRef = useRef(null);
         function clickImport(){ fileRef.current?.click(); }
         function importFileChanged(e){
-          const f = e.target.files?.[0];
-          if (!f) return;
+          const f = e.target.files?.[0]; if (!f) return;
           const reader = new FileReader();
           reader.onload = () => {
-            try {
-              const txt = String(reader.result || "");
-              JSON.parse(txt); // basic validation
-              setBundleText(txt);
-              show(`Imported ${f.name}`);
-            } catch {
-              show("Invalid JSON file");
-            }
+            try { const txt = String(reader.result||""); JSON.parse(txt); setBundleText(txt); show(`Imported ${f.name}`); }
+            catch { show("Invalid JSON file"); }
           };
-          reader.readAsText(f);
-          e.target.value = "";
-        }
-        function downloadText(name, text, type="application/json") {
-          const blob = new Blob([text], { type });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url; a.download = name; a.click();
-          URL.revokeObjectURL(url);
+          reader.readAsText(f); e.target.value = "";
         }
         function downloadBundle(filename="fhir-bundle.json") {
-          try {
-            const txt = bundleText.trim();
-            JSON.parse(txt);
-            downloadText(filename, txt);
-            show("Downloaded bundle");
-          } catch { show("Bundle is not valid JSON"); }
+          try { const txt = bundleText.trim(); JSON.parse(txt); downloadText(filename, txt); show("Downloaded bundle"); }
+          catch { show("Bundle is not valid JSON"); }
         }
         async function exportFHIR() {
           try {
             const obj = JSON.parse(bundleText);
             let res;
-            try {
-              res = await http(apiBase, "/export/fhir/bundle", { method: "POST", body: JSON.stringify(obj) });
-            } catch {
-              res = await http(apiBase, "/export/bundle", { method: "POST", body: JSON.stringify(obj) });
-            }
+            try { res = await http(apiBase, "/export/fhir/bundle", { method:"POST", body: JSON.stringify(obj) }); }
+            catch { res = await http(apiBase, "/export/bundle", { method:"POST", body: JSON.stringify(obj) }); }
             const data = typeof res === "string" ? res : JSON.stringify(res, null, 2);
             downloadText("fhir-bundle-export.json", data, "application/fhir+json");
             show("Exported via API");
           } catch {
-            downloadBundle("fhir-bundle-export.json");
-            show("Exported locally (fallback)");
+            downloadBundle("fhir-bundle-export.json"); show("Exported locally (fallback)");
           }
         }
-        async function copy(text) {
-          try { await navigator.clipboard.writeText(text); show("Copied"); } catch { show("Copy failed"); }
+
+        // ---------- EXPORTS: VALUESET / CONCEPTMAP / CODES ----------
+        function exportValueSet(fmt="json"){
+          if(!vs) return show("Load ValueSet first (or wait)");
+          if (fmt==="json") return downloadText("valueset.json", JSON.stringify(vs, null, 2));
+          if (fmt==="ndjson") return downloadText("valueset.ndjson", toNDJSON([vs]), "application/x-ndjson");
+          if (fmt==="csv") {
+            const rows = (vs.includes||[]).map(code => ({code}));
+            return downloadText("valueset.csv", toCSV(rows, ["code"]), "text/csv");
+          }
+        }
+        function exportConceptMap(fmt="json"){
+          if(!cmap) return show("Load ConceptMap first (or wait)");
+          if (fmt==="json") return downloadText("conceptmap.json", JSON.stringify(cmap, null, 2));
+          if (fmt==="ndjson") return downloadText("conceptmap.ndjson", toNDJSON(cmap.mappings||[]), "application/x-ndjson");
+          if (fmt==="csv") {
+            const rows = (cmap.mappings||[]).map(m=>({sourceCode:m.sourceCode, targetCode:m.targetCode, relation:m.relation}));
+            return downloadText("conceptmap.csv", toCSV(rows, ["sourceCode","targetCode","relation"]), "text/csv");
+          }
+        }
+        // Build a full codes table by validating all ValueSet codes (slow for big sets)
+        const [buildingCodes, setBuildingCodes] = useState(false);
+        async function exportCodesCSV(){
+          if(!vs) return show("ValueSet not loaded yet");
+          setBuildingCodes(true);
+          try {
+            const codes = vs.includes || [];
+            const out = [];
+            const limit = 8; // concurrency
+            let i = 0;
+            async function worker() {
+              while (i < codes.length) {
+                const idx = i++; const code = codes[idx];
+                try {
+                  const r = await http(apiBase, `/codes/validate?code=${encodeURIComponent(code)}`);
+                  out.push({ code, display: r.display||"", system: r.system||"", inValueSet: r.inValueSet ? "yes" : "no", exists: r.exists ? "yes" : "no" });
+                } catch { out.push({ code, display:"", system:"", inValueSet:"", exists:"" }); }
+              }
+            }
+            await Promise.all(new Array(limit).fill(0).map(worker));
+            const csv = toCSV(out, ["code","display","system","exists","inValueSet"]);
+            downloadText("codes.csv", csv, "text/csv");
+            show(`Exported ${out.length} codes`);
+          } finally {
+            setBuildingCodes(false);
+          }
         }
 
         return (
@@ -239,124 +296,138 @@
             <header className="card">
               <div className="flex items-center justify-between gap-3 flex-wrap">
                 <div>
-                  <h1 className="text-2xl md:text-3xl font-bold tracking-tight">SAARTHI Starter UI</h1>
-                  <p className="text-sm text-slate-600 mt-1">
-                    API: <span className="badge">{apiBase}</span>
-                  </p>
+                  <h1 className="text-2xl md:text-3xl font-bold tracking-tight">SAARTHI — Terminology & FHIR Demo</h1>
+                  <p className="text-sm text-slate-600 mt-1">API: <span className="badge">{apiBase}</span></p>
                 </div>
                 <div className="flex items-center gap-2">
                   <input className="input w-[300px]" value={apiBase} onChange={e=>setApiBase(e.target.value)} placeholder="https://your-api.onrender.com"/>
-                  <span className={`badge ${pingOk ? "border-green-200 bg-green-50 text-green-700" : "border-amber-200 bg-amber-50 text-amber-700"}`}>
-                    {pingOk ? "API online" : "Waiting for API…"}
-                  </span>
+                  <span className={`badge ${pingOk ? "border-green-200 bg-green-50 text-green-700" : "border-amber-200 bg-amber-50 text-amber-700"}`}>{pingOk ? "API online" : "Waiting for API…"}</span>
                 </div>
               </div>
             </header>
 
             <section className="grid md:grid-cols-2 gap-5">
+              {/* SEARCH + FILTER */}
               <div className="card space-y-3">
                 <h2 className="text-lg font-semibold">Search Codes</h2>
-                <input
-                  className="input"
-                  placeholder="Type to search (debounced)… e.g., Amlapitta, Sandhivata, Vamana, Nasya"
-                  value={q}
-                  onChange={e=>setQ(e.target.value)}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                  <input className="input md:col-span-2" placeholder="Type to search… e.g., Amlapitta, Vamana, Hypertension" value={q} onChange={e=>setQ(e.target.value)}/>
+                  <select className="input" value={category} onChange={e=>setCategory(e.target.value)}>
+                    {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+
                 {codes?.length ? (
-                  <div className="list">
-                    {codes.map((c, i) => (
+                  <div className="space-y-2">
+                    {codes.slice(0, 50).map((c, i) => (
                       <div className="row" key={i}>
                         <div>
                           <div className="font-semibold">{c.display} <span className="mono text-xs text-slate-500">{c.code}</span></div>
-                          <div className="text-xs text-slate-500">{(c.synonyms||[]).join(", ")}</div>
+                          <div className="text-[11px] text-slate-500">{(c.synonyms||[]).join(", ")}</div>
+                          <div className="text-[11px] text-slate-500">Category: {c.category}</div>
                         </div>
                         <div className="flex gap-2">
                           <button className="btn" onClick={()=>insertIntoBundle(c)}>Insert</button>
-                          <button className="btn" onClick={()=>copy(JSON.stringify(c))}>Copy</button>
+                          <button className="btn" onClick={()=>enqueueValidation(c)}>Validate</button>
                         </div>
                       </div>
                     ))}
+                    {codes.length > 50 && <div className="text-xs text-slate-500">Showing first 50… refine your search to narrow results.</div>}
                   </div>
-                ) : <div className="text-sm text-slate-500">No results yet.</div>}
+                ) : <div className="text-sm text-slate-500">No results yet. Start typing above.</div>}
               </div>
 
+              {/* VALIDATION */}
               <div className="card space-y-3">
-                <h2 className="text-lg font-semibold">Validate Code</h2>
-                <input className="input" placeholder="Enter a code to validate (e.g., TM2-0004)" value={codeToValidate} onChange={e=>setCodeToValidate(e.target.value)}/>
-                {valResult && (
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="pill"><strong>Code:</strong> <span className="mono">{valResult.code}</span></span>
-                      <span className={`pill ${valResult.exists ? "ok" : "err"}`}>{valResult.exists ? "exists" : "not found"}</span>
-                      <span className={`pill ${valResult.inValueSet ? "ok" : "warn"}`}>{valResult.inValueSet ? "in ValueSet" : "not in ValueSet"}</span>
-                    </div>
-                    {valResult.display && <div className="text-sm text-slate-600">Display: {valResult.display}</div>}
-                    {valResult.mappings?.length ? (
-                      <>
-                        <div className="text-sm text-slate-600">Mappings:</div>
-                        <CodeBlock data={valResult.mappings}/>
-                      </>
-                    ) : <div className="text-sm text-slate-500">No mappings found.</div>}
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold">Validation List</h2>
+                  <div className="flex gap-2">
+                    <button className="btn" onClick={validateAll}>Validate All</button>
+                    <button className="btn" onClick={clearVal}>Clear</button>
                   </div>
-                )}
+                </div>
+                {valList.length ? (
+                  <div className="overflow-auto">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th>Code</th><th>Display</th><th>Exists</th><th>In ValueSet</th><th>Mappings</th><th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {valList.map((v,i)=>(
+                          <tr key={i}>
+                            <td className="mono">{v.code}</td>
+                            <td>{v.display || ""}</td>
+                            <td>{v.result ? (v.result.exists ? "✔︎" : "—") : "…"}</td>
+                            <td>{v.result ? (v.result.inValueSet ? "✔︎" : "—") : "…"}</td>
+                            <td>{v.result ? ((v.result.mappings||[]).length) : "…"}</td>
+                            <td><button className="btn" onClick={()=>removeVal(v.code)}>Remove</button></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : <div className="text-sm text-slate-500">Use <span className="kbd">Insert</span> or <span className="kbd">Validate</span> in Search to add items here.</div>}
               </div>
             </section>
 
+            {/* VALUESET / CONCEPTMAP + EXPORTS */}
             <section className="grid md:grid-cols-2 gap-5">
               <div className="card space-y-3">
-                <h2 className="text-lg font-semibold">ValueSet (demo)</h2>
-                <div className="toolbar">
-                  <button className="btn btn-ghost" onClick={()=>http(apiBase, "/valueset").then(setVs).catch(e=>show(e.message))}>Load ValueSet</button>
-                  {vs && <button className="btn" onClick={()=>downloadText("valueset.json", JSON.stringify(vs, null, 2))}>Download</button>}
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold">ValueSet</h2>
+                  <div className="flex gap-2">
+                    <button className="btn" onClick={()=>http(apiBase, "/valueset").then(setVs).catch(e=>show(e.message))}>Load</button>
+                    <button className="btn" onClick={()=>exportValueSet("json")}>JSON</button>
+                    <button className="btn" onClick={()=>exportValueSet("ndjson")}>NDJSON</button>
+                    <button className="btn" onClick={()=>exportValueSet("csv")}>CSV</button>
+                  </div>
                 </div>
                 {vs && <CodeBlock data={vs}/>}
               </div>
 
               <div className="card space-y-3">
-                <h2 className="text-lg font-semibold">ConceptMap (demo)</h2>
-                <div className="toolbar">
-                  <button className="btn btn-ghost" onClick={()=>http(apiBase, "/conceptmap").then(setCmap).catch(e=>show(e.message))}>Load ConceptMap</button>
-                  {cmap && <button className="btn" onClick={()=>downloadText("conceptmap.json", JSON.stringify(cmap, null, 2))}>Download</button>}
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold">ConceptMap</h2>
+                  <div className="flex gap-2">
+                    <button className="btn" onClick={()=>http(apiBase, "/conceptmap").then(setCmap).catch(e=>show(e.message))}>Load</button>
+                    <button className="btn" onClick={()=>exportConceptMap("json")}>JSON</button>
+                    <button className="btn" onClick={()=>exportConceptMap("ndjson")}>NDJSON</button>
+                    <button className="btn" onClick={()=>exportConceptMap("csv")}>CSV</button>
+                  </div>
                 </div>
                 {cmap && <CodeBlock data={cmap}/>}
               </div>
             </section>
 
+            {/* BUNDLE */}
             <section className="card space-y-3">
               <div className="flex items-center justify-between flex-wrap gap-3">
                 <h2 className="text-lg font-semibold">FHIR Bundle → Summary</h2>
-                <div className="toolbar">
-                  <input ref={fileRef} type="file" accept="application/json,.json" className="hidden" onChange={importFileChanged}/>
+                <div className="flex gap-2 flex-wrap">
+                  <input type="file" className="hidden" ref={fileRef} accept="application/json,.json" onChange={importFileChanged}/>
                   <button className="btn" onClick={()=>fileRef.current?.click()}>Import FHIR (JSON)</button>
                   <button className="btn" onClick={()=>downloadBundle("fhir-bundle.json")}>Download FHIR</button>
                   <button className="btn" onClick={exportFHIR}>Export FHIR</button>
                   <button className="btn btn-primary" onClick={summarizeBundle}>Summarize Bundle</button>
                 </div>
               </div>
-
               <div className="grid md:grid-cols-2 gap-4">
-                <textarea
-                  className="input mono min-h-[280px]"
-                  value={bundleText}
-                  onChange={e=>setBundleText(e.target.value)}
-                />
+                <textarea className="input mono min-h-[280px]" value={bundleText} onChange={e=>setBundleText(e.target.value)} />
                 <div className="space-y-2">
-                  {bundleSummary
-                    ? <>
-                        <div className="text-sm text-slate-600">Summary:</div>
-                        <CodeBlock data={bundleSummary}/>
-                        <div className="toolbar">
-                          <button className="btn" onClick={()=>copy(JSON.stringify(bundleSummary, null, 2))}>Copy Summary</button>
-                          <button className="btn" onClick={()=>downloadText("bundle-summary.json", JSON.stringify(bundleSummary, null, 2))}>Download Summary</button>
-                        </div>
-                      </>
-                    : <div className="text-sm text-slate-500">Paste/import a FHIR Bundle (JSON) then click <span className="kbd">Summarize Bundle</span>.</div>}
+                  {bundleSummary ? <>
+                    <div className="text-sm text-slate-600">Summary:</div>
+                    <CodeBlock data={bundleSummary}/>
+                    <div className="flex gap-2">
+                      <button className="btn" onClick={()=>downloadText("bundle-summary.json", JSON.stringify(bundleSummary, null, 2))}>Download Summary</button>
+                    </div>
+                  </> : <div className="text-sm text-slate-500">Paste/import a FHIR Bundle JSON, then click <span className="kbd">Summarize Bundle</span>.</div>}
                 </div>
               </div>
             </section>
 
-            <footer className="text-xs text-slate-500 text-center">© SAARTHI Starter Kit — Demo subset for evaluation only</footer>
-
+            <footer className="text-xs text-slate-500 text-center">© SAARTHI — Demo dataset for evaluation only</footer>
             {msg && <div className="toast mono text-sm">{msg}</div>}
           </div>
         );
