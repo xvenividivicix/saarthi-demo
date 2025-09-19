@@ -96,7 +96,7 @@
 
         useEffect(() => {
           // quick connectivity check using /docs (always exists) or a known GET
-          fetch(API_BASE + "/docs", { method: "GET" })
+          fetch(API_BASE + "/valueset", { method: "GET" })
             .then(r => setPingOk(r.ok))
             .catch(() => setPingOk(false));
         }, []);
