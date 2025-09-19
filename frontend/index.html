@@ -8,7 +8,7 @@
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- React 18 UMD + Babel so JSX works without a build step -->
+    <!-- React 18 UMD + Babel for JSX -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -36,6 +36,12 @@
       .toolbar { display:flex; gap:10px; flex-wrap:wrap; }
       .toast { position: fixed; right: 16px; bottom: 16px; background: #111827; color:#fff; padding: 12px 14px; border-radius:12px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
       .link { color: var(--brand); text-decoration: underline; }
+      .pill { display:inline-flex; gap:6px; align-items:center; padding:4px 10px; border:1px solid var(--line); border-radius:999px; background:#f8fafc; }
+      .list { display:flex; flex-direction:column; gap:8px; }
+      .row { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+      .ok { color:#16a34a; }
+      .warn { color:#ca8a04; }
+      .err { color:#dc2626; }
     </style>
   </head>
   <body>
@@ -44,14 +50,20 @@
     <script type="text/babel" data-presets="react">
       const { useEffect, useMemo, useRef, useState } = React;
 
-      // Allow ?api=https://your-api.onrender.com; fallback to localhost for dev
-      const API_BASE = (new URLSearchParams(location.search).get('api')) || 'http://localhost:8000';
+      // API URL handling: ?api= override, else localStorage, else default
+      function getInitialApi() {
+        const qs = new URLSearchParams(location.search).get('api');
+        if (qs) return qs;
+        const saved = localStorage.getItem("API_BASE");
+        if (saved) return saved;
+        return "http://localhost:8000";
+      }
 
-      // fetch helper — only add Content-Type when sending a body
-      async function api(path, opts = {}) {
+      // fetch helper — only add Content-Type on POST/PUT
+      async function http(base, path, opts = {}) {
         const hasBody = typeof opts.body !== "undefined";
         const headers = hasBody ? { "Content-Type": "application/json" } : {};
-        const res = await fetch(API_BASE + path, { ...opts, headers: { ...headers, ...(opts.headers || {}) } });
+        const res = await fetch(base + path, { ...opts, headers: { ...headers, ...(opts.headers || {}) } });
         if (!res.ok) {
           let txt = "";
           try { txt = await res.text(); } catch {}
@@ -76,46 +88,83 @@
         return { msg, show };
       }
 
+      // simple debounce
+      function useDebounced(value, delay=300) {
+        const [v, setV] = useState(value);
+        useEffect(() => {
+          const t = setTimeout(() => setV(value), delay);
+          return () => clearTimeout(t);
+        }, [value, delay]);
+        return v;
+      }
+
       function App() {
         const { msg, show } = useToast();
 
+        const [apiBase, setApiBase] = useState(getInitialApi());
         const [pingOk, setPingOk] = useState(false);
+
         useEffect(() => {
-          // hit a small JSON route for health
-          fetch(API_BASE + "/openapi.json").then(r => setPingOk(r.ok)).catch(()=> setPingOk(false));
-        }, []);
+          localStorage.setItem("API_BASE", apiBase);
+          fetch(apiBase + "/openapi.json").then(r => setPingOk(r.ok)).catch(()=> setPingOk(false));
+        }, [apiBase]);
 
-        // Search
-        const [q, setQ] = useState("");
-        const [codes, setCodes] = useState([]);
-
-        async function doSearch() {
-          try {
-            setCodes([]);
-            const data = await api(`/codes/search?q=${encodeURIComponent(q)}`);
-            setCodes(data || []);
-          } catch (e) { show(e.message); }
-        }
-
-        // ValueSet & ConceptMap
+        // Load reference data for validation
         const [vs, setVs] = useState(null);
         const [cmap, setCmap] = useState(null);
-        async function loadVS(){ try { setVs(await api("/valueset")); } catch(e){ show(e.message); } }
-        async function loadCMap(){ try { setCmap(await api("/conceptmap")); } catch(e){ show(e.message); } }
+        useEffect(() => {
+          // preload silently
+          http(apiBase, "/valueset").then(setVs).catch(()=>{});
+          http(apiBase, "/conceptmap").then(setCmap).catch(()=>{});
+        }, [apiBase]);
 
-        // FHIR Bundle editor
+        // SEARCH (debounced)
+        const [q, setQ] = useState("");
+        const dq = useDebounced(q, 350);
+        const [codes, setCodes] = useState([]);
+        useEffect(() => {
+          if (!dq) { setCodes([]); return; }
+          http(apiBase, `/codes/search?q=${encodeURIComponent(dq)}`)
+            .then(data => setCodes(data || []))
+            .catch(()=> setCodes([]));
+        }, [dq, apiBase]);
+
+        function insertIntoBundle(c) {
+          try {
+            const obj = JSON.parse(bundleText);
+            const entry = obj.entry || (obj.entry = []);
+            entry.push({
+              resource: {
+                resourceType: "Condition",
+                code: { coding: [{ system: c.system || "urn:icd:icd11:tm", code: c.code, display: c.display }] }
+              }
+            });
+            const next = JSON.stringify(obj, null, 2);
+            setBundleText(next);
+            show(`Inserted ${c.code}`);
+          } catch {
+            show("Bundle JSON invalid; cannot insert");
+          }
+        }
+
+        // VALIDATOR
+        const [codeToValidate, setCodeToValidate] = useState("");
+        const dCode = useDebounced(codeToValidate, 350);
+        const [valResult, setValResult] = useState(null);
+        useEffect(() => {
+          if (!dCode) { setValResult(null); return; }
+          http(apiBase, `/codes/validate?code=${encodeURIComponent(dCode)}`)
+            .then(setValResult)
+            .catch(()=> setValResult(null));
+        }, [dCode, apiBase]);
+
+        // BUNDLE editor
         const [bundleText, setBundleText] = useState(`{
   "resourceType": "Bundle",
   "type": "collection",
   "entry": [
     { "resource": { "resourceType": "Patient", "id": "pat-1" } },
-    { "resource": { "resourceType": "Encounter", "id": "enc-1" } },
-    { "resource": { "resourceType": "Condition",
-      "code": { "coding": [ { "system":"urn:icd:icd11:tm", "code":"TM2-0004", "display":"Amlapitta" } ] } } },
-    { "resource": { "resourceType": "Procedure",
-      "code": { "coding": [ { "system":"urn:icd:icd11:tm", "code":"TM2-PROC-003", "display":"Vamana Karma" } ] } } },
-    { "resource": { "resourceType": "Observation",
-      "code": { "text": "Dosha Assessment" }, "valueString": "Pitta dominant" } }
+    { "resource": { "resourceType": "Encounter", "id": "enc-1" } }
   ]
 }`);
         const [bundleSummary, setBundleSummary] = useState(null);
@@ -123,13 +172,13 @@
         async function summarizeBundle() {
           try {
             const obj = JSON.parse(bundleText);
-            const data = await api("/bundle/summary", { method: "POST", body: JSON.stringify(obj) });
+            const data = await http(apiBase, "/bundle/summary", { method: "POST", body: JSON.stringify(obj) });
             setBundleSummary(data);
             show("Bundle summarized");
           } catch (e) { show(e.message || "Invalid JSON"); }
         }
 
-        // Import: read .json and load into editor
+        // Import + Download + Export
         const fileRef = useRef(null);
         function clickImport(){ fileRef.current?.click(); }
         function importFileChanged(e){
@@ -147,93 +196,118 @@
             }
           };
           reader.readAsText(f);
-          // reset so selecting same file again still triggers change
           e.target.value = "";
         }
-
-        // Download current bundle as JSON
-        function downloadBundle(filename = "fhir-bundle.json") {
+        function downloadText(name, text, type="application/json") {
+          const blob = new Blob([text], { type });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url; a.download = name; a.click();
+          URL.revokeObjectURL(url);
+        }
+        function downloadBundle(filename="fhir-bundle.json") {
           try {
             const txt = bundleText.trim();
-            JSON.parse(txt); // validate
-            const blob = new Blob([txt], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url; a.download = filename; a.click();
-            URL.revokeObjectURL(url);
+            JSON.parse(txt);
+            downloadText(filename, txt);
             show("Downloaded bundle");
-          } catch {
-            show("Bundle is not valid JSON");
-          }
+          } catch { show("Bundle is not valid JSON"); }
         }
-
-        // Try API export if available; fall back to download
         async function exportFHIR() {
           try {
             const obj = JSON.parse(bundleText);
-            // Common patterns (adjust if your API has a specific path)
-            // 1) /export/fhir/bundle
             let res;
             try {
-              res = await api("/export/fhir/bundle", { method: "POST", body: JSON.stringify(obj) });
+              res = await http(apiBase, "/export/fhir/bundle", { method: "POST", body: JSON.stringify(obj) });
             } catch {
-              // 2) /export/bundle
-              res = await api("/export/bundle", { method: "POST", body: JSON.stringify(obj) });
+              res = await http(apiBase, "/export/bundle", { method: "POST", body: JSON.stringify(obj) });
             }
-            // If API returns a Bundle or a string, let user download it
             const data = typeof res === "string" ? res : JSON.stringify(res, null, 2);
-            const blob = new Blob([data], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url; a.download = "fhir-bundle-export.json"; a.click();
-            URL.revokeObjectURL(url);
+            downloadText("fhir-bundle-export.json", data, "application/fhir+json");
             show("Exported via API");
-          } catch (e) {
-            // graceful fallback
+          } catch {
             downloadBundle("fhir-bundle-export.json");
             show("Exported locally (fallback)");
           }
         }
+        async function copy(text) {
+          try { await navigator.clipboard.writeText(text); show("Copied"); } catch { show("Copy failed"); }
+        }
 
         return (
           <div className="max-w-6xl mx-auto p-6 space-y-6">
-            <header className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl md:text-3xl font-bold tracking-tight">SAARTHI Starter UI</h1>
-                <p className="text-sm text-slate-600 mt-1">
-                  API: <span className="badge">{API_BASE}</span>
-                </p>
-              </div>
-              <div className={`badge ${pingOk ? "border-green-200 bg-green-50 text-green-700" : "border-amber-200 bg-amber-50 text-amber-700"}`}>
-                {pingOk ? "API online" : "Waiting for API…"}
+            <header className="card">
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <div>
+                  <h1 className="text-2xl md:text-3xl font-bold tracking-tight">SAARTHI Starter UI</h1>
+                  <p className="text-sm text-slate-600 mt-1">
+                    API: <span className="badge">{apiBase}</span>
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input className="input w-[300px]" value={apiBase} onChange={e=>setApiBase(e.target.value)} placeholder="https://your-api.onrender.com"/>
+                  <span className={`badge ${pingOk ? "border-green-200 bg-green-50 text-green-700" : "border-amber-200 bg-amber-50 text-amber-700"}`}>
+                    {pingOk ? "API online" : "Waiting for API…"}
+                  </span>
+                </div>
               </div>
             </header>
 
-            <section className="card space-y-3">
-              <h2 className="text-lg font-semibold">Search Codes</h2>
-              <div className="flex gap-2">
+            <section className="grid md:grid-cols-2 gap-5">
+              <div className="card space-y-3">
+                <h2 className="text-lg font-semibold">Search Codes</h2>
                 <input
                   className="input"
-                  placeholder="Try: Amlapitta, Sandhivata, Vamana, Nasya"
+                  placeholder="Type to search (debounced)… e.g., Amlapitta, Sandhivata, Vamana, Nasya"
                   value={q}
                   onChange={e=>setQ(e.target.value)}
-                  onKeyDown={e=>{ if (e.key === "Enter") doSearch(); }}
                 />
-                <button className="btn btn-primary" onClick={doSearch}>Search</button>
+                {codes?.length ? (
+                  <div className="list">
+                    {codes.map((c, i) => (
+                      <div className="row" key={i}>
+                        <div>
+                          <div className="font-semibold">{c.display} <span className="mono text-xs text-slate-500">{c.code}</span></div>
+                          <div className="text-xs text-slate-500">{(c.synonyms||[]).join(", ")}</div>
+                        </div>
+                        <div className="flex gap-2">
+                          <button className="btn" onClick={()=>insertIntoBundle(c)}>Insert</button>
+                          <button className="btn" onClick={()=>copy(JSON.stringify(c))}>Copy</button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : <div className="text-sm text-slate-500">No results yet.</div>}
               </div>
-              {codes?.length ? (
-                <>
-                  <div className="text-sm text-slate-600">Results: <span className="mono">{codes.length}</span></div>
-                  <CodeBlock data={codes}/>
-                </>
-              ) : <div className="text-sm text-slate-500">No results yet. Enter a query and press <span className="kbd">Enter</span> or click <span className="kbd">Search</span>.</div>}
+
+              <div className="card space-y-3">
+                <h2 className="text-lg font-semibold">Validate Code</h2>
+                <input className="input" placeholder="Enter a code to validate (e.g., TM2-0004)" value={codeToValidate} onChange={e=>setCodeToValidate(e.target.value)}/>
+                {valResult && (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="pill"><strong>Code:</strong> <span className="mono">{valResult.code}</span></span>
+                      <span className={`pill ${valResult.exists ? "ok" : "err"}`}>{valResult.exists ? "exists" : "not found"}</span>
+                      <span className={`pill ${valResult.inValueSet ? "ok" : "warn"}`}>{valResult.inValueSet ? "in ValueSet" : "not in ValueSet"}</span>
+                    </div>
+                    {valResult.display && <div className="text-sm text-slate-600">Display: {valResult.display}</div>}
+                    {valResult.mappings?.length ? (
+                      <>
+                        <div className="text-sm text-slate-600">Mappings:</div>
+                        <CodeBlock data={valResult.mappings}/>
+                      </>
+                    ) : <div className="text-sm text-slate-500">No mappings found.</div>}
+                  </div>
+                )}
+              </div>
             </section>
 
             <section className="grid md:grid-cols-2 gap-5">
               <div className="card space-y-3">
                 <h2 className="text-lg font-semibold">ValueSet (demo)</h2>
                 <div className="toolbar">
-                  <button className="btn btn-ghost" onClick={loadVS}>Load ValueSet</button>
+                  <button className="btn btn-ghost" onClick={()=>http(apiBase, "/valueset").then(setVs).catch(e=>show(e.message))}>Load ValueSet</button>
+                  {vs && <button className="btn" onClick={()=>downloadText("valueset.json", JSON.stringify(vs, null, 2))}>Download</button>}
                 </div>
                 {vs && <CodeBlock data={vs}/>}
               </div>
@@ -241,7 +315,8 @@
               <div className="card space-y-3">
                 <h2 className="text-lg font-semibold">ConceptMap (demo)</h2>
                 <div className="toolbar">
-                  <button className="btn btn-ghost" onClick={loadCMap}>Load ConceptMap</button>
+                  <button className="btn btn-ghost" onClick={()=>http(apiBase, "/conceptmap").then(setCmap).catch(e=>show(e.message))}>Load ConceptMap</button>
+                  {cmap && <button className="btn" onClick={()=>downloadText("conceptmap.json", JSON.stringify(cmap, null, 2))}>Download</button>}
                 </div>
                 {cmap && <CodeBlock data={cmap}/>}
               </div>
@@ -252,7 +327,7 @@
                 <h2 className="text-lg font-semibold">FHIR Bundle → Summary</h2>
                 <div className="toolbar">
                   <input ref={fileRef} type="file" accept="application/json,.json" className="hidden" onChange={importFileChanged}/>
-                  <button className="btn" onClick={clickImport}>Import FHIR (JSON)</button>
+                  <button className="btn" onClick={()=>fileRef.current?.click()}>Import FHIR (JSON)</button>
                   <button className="btn" onClick={()=>downloadBundle("fhir-bundle.json")}>Download FHIR</button>
                   <button className="btn" onClick={exportFHIR}>Export FHIR</button>
                   <button className="btn btn-primary" onClick={summarizeBundle}>Summarize Bundle</button>
@@ -261,7 +336,7 @@
 
               <div className="grid md:grid-cols-2 gap-4">
                 <textarea
-                  className="input mono min-h-[260px]"
+                  className="input mono min-h-[280px]"
                   value={bundleText}
                   onChange={e=>setBundleText(e.target.value)}
                 />
@@ -270,8 +345,12 @@
                     ? <>
                         <div className="text-sm text-slate-600">Summary:</div>
                         <CodeBlock data={bundleSummary}/>
+                        <div className="toolbar">
+                          <button className="btn" onClick={()=>copy(JSON.stringify(bundleSummary, null, 2))}>Copy Summary</button>
+                          <button className="btn" onClick={()=>downloadText("bundle-summary.json", JSON.stringify(bundleSummary, null, 2))}>Download Summary</button>
+                        </div>
                       </>
-                    : <div className="text-sm text-slate-500">Paste or import a FHIR Bundle (JSON). Click <span className="kbd">Summarize Bundle</span>.</div>}
+                    : <div className="text-sm text-slate-500">Paste/import a FHIR Bundle (JSON) then click <span className="kbd">Summarize Bundle</span>.</div>}
                 </div>
               </div>
             </section>
