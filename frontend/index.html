@@ -8,7 +8,7 @@
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- React 18 UMD + Babel for JSX (no build step needed) -->
+    <!-- React 18 UMD + Babel for JSX -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -17,7 +17,9 @@
       :root{
         --fg:#0f172a; --muted:#4b5563; --line:#e5e7eb; --card:#ffffff;
         --brand:#2563eb; --brand-700:#1d4ed8; --brand-50:#eff6ff;
+        --ok:#16a34a; --warn:#d97706; --err:#dc2626;
       }
+      html { scroll-behavior:smooth; }
       body{
         color:var(--fg);
         background:
@@ -47,22 +49,31 @@
       .input{ border:1px solid var(--line); border-radius:12px; padding:10px 12px; outline:none; width:100%; background:#fff; }
       .input:focus{ border-color:var(--brand); box-shadow:0 0 0 3px rgba(37,99,235,.15); }
       .mono{ font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; }
-      .toast{ position:fixed; right:16px; bottom:16px; background:#0b1220; color:#fff; padding:12px 14px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.2); }
+      .toast{
+        position:fixed; right:16px; bottom:16px; background:#0b1220; color:#fff;
+        padding:12px 14px; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.2);
+        opacity:0; transform:translateY(10px); transition:.2s ease;
+      }
+      .toast.show{ opacity:1; transform:translateY(0); }
       .row{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px; border:1px solid var(--line); border-radius:12px; background:#fff; }
       .table{ width:100%; border-collapse:separate; border-spacing:0; }
       .table th,.table td{ text-align:left; font-size:12px; padding:8px 10px; border-bottom:1px solid #eef2f7; }
       .table th{ font-weight:700; color:#334155; }
       .hint{ font-size:12px; color:#4b5563; }
       .title{ font-size:1.05rem; font-weight:700; letter-spacing:.2px; }
+      .guide{
+        border:1px dashed #c7d2fe; background:#eef2ff; color:#3730a3;
+        padding:10px 12px; border-radius:12px;
+      }
     </style>
   </head>
   <body>
     <div id="root"></div>
 
     <script type="text/babel" data-presets="react">
-      const { useEffect, useRef, useState } = React;
+      const { useEffect, useState, useRef } = React;
 
-      /* ---------- Utilities ---------- */
+      /* ---------- utilities ---------- */
       function getInitialApi(){
         const qs = new URLSearchParams(location.search).get('api');
         if(qs) return qs;
@@ -100,7 +111,7 @@
         const d = display.toLowerCase();
         if (/(angina|myocard|heart|cad|hypertension|cholesterol|atrial|afib|stroke|dvt|pe|thrombo)/.test(d)) return 'Cardiology';
         if (/(diabetes|thyroid|obesity|pcos|endocr|hypo|hyperthy)/.test(d)) return 'Endocrine';
-        if (/(asthma|copd|cough|pneumonia|tb|respir|swasa|kasa|bronch)/.test(d)) return 'Respiratory';
+        if (/(asthma|copd|cough|pneumonia|tb|respir|swasa|kasa|bronch|cold)/.test(d)) return 'Respiratory';
         if (/(gerd|ulcer|liver|hepat|pancrea|appendic|gall|ibs|ibd|gastr|chole)/.test(d)) return 'Gastrointestinal';
         if (/(ckd|kidney|uti|renal|nephro|prostat)/.test(d)) return 'Renal/Uro';
         if (/(migraine|epilep|neuro|palsy|sciatica)/.test(d)) return 'Neurology';
@@ -117,10 +128,14 @@
         return <pre className="mono text-xs bg-slate-50 border border-slate-200 rounded-xl p-3 overflow-auto max-h-96 whitespace-pre-wrap">{String(text)}</pre>;
       }
 
-      /* ---------- App ---------- */
+      /* ---------- app ---------- */
       function App(){
         const [apiBase, setApiBase] = useState(getInitialApi());
         const [pingOk, setPingOk] = useState(false);
+        const [toast, setToast] = useState('');
+        const toastTimer = useRef(null);
+        function showToast(t){ clearTimeout(toastTimer.current); setToast(t); toastTimer.current = setTimeout(()=>setToast(''), 2200); }
+
         useEffect(()=>{
           localStorage.setItem('API_BASE', apiBase);
           fetch(apiBase + '/openapi.json').then(r=>setPingOk(r.ok)).catch(()=>setPingOk(false));
@@ -133,7 +148,7 @@
           http(apiBase, '/conceptmap').then(setCmap).catch(()=>{});
         }, [apiBase]);
 
-        /* Search + suggestions */
+        /* search */
         const [q,setQ] = useState('');
         const dq = useDebounced(q, 350);
         const [category, setCategory] = useState('All');
@@ -153,8 +168,10 @@
 
         const categories = ['All','Cardiology','Endocrine','Respiratory','Gastrointestinal','Renal/Uro','Neurology','Psych','Ortho/MSK','Derm','Infectious','Gyn/OB','Procedure/Therapy','Other'];
 
-        /* Validation list */
+        /* validation */
         const [valList, setValList] = useState([]);
+        const [guide, setGuide] = useState(false);
+
         function enqueueValidation(c){
           setShowResults(false);
           setValList(prev=>{
@@ -162,8 +179,16 @@
             return [...prev, { code:c.code, display:c.display, system:c.system }];
           });
           http(apiBase, `/codes/validate?code=${encodeURIComponent(c.code)}`)
-            .then(res=>setValList(prev=>prev.map(x=>x.code===c.code?{...x, result:res}:x)))
-            .catch(()=>setValList(prev=>prev.map(x=>x.code===c.code?{...x, result:{error:true}}:x)));
+            .then(res=>{
+              setValList(prev=>prev.map(x=>x.code===c.code?{...x, result:res}:x));
+              showToast(`Validated ${c.code}`);
+              setGuide(true);
+            })
+            .catch(()=>{
+              setValList(prev=>prev.map(x=>x.code===c.code?{...x, result:{error:true}}:x));
+              showToast(`Validation failed for ${c.code}`);
+              setGuide(true);
+            });
         }
         function validateAll(){
           setShowResults(false);
@@ -177,12 +202,14 @@
               const hit = results.find(y=>y.code===x.code);
               return hit ? {...x, result:hit.r} : x;
             }));
+            showToast('Validated all');
+            setGuide(true);
           });
         }
         function removeVal(code){ setValList(prev=>prev.filter(x=>x.code!==code)); }
         function clearVal(){ setValList([]); }
 
-        /* Bundle editor */
+        /* bundle */
         const [bundleText, setBundleText] = useState(`{
   "resourceType": "Bundle",
   "type": "collection",
@@ -205,30 +232,31 @@
               }
             });
             setBundleText(JSON.stringify(obj, null, 2));
+            showToast(`Inserted ${c.code}`);
             enqueueValidation(c);
-          }catch{ alert('Bundle JSON invalid; cannot insert'); }
+          }catch{ showToast('Bundle JSON invalid; cannot insert'); }
         }
         async function summarizeBundle(){
           try{
             const obj = JSON.parse(bundleText);
             const data = await http(apiBase, '/bundle/summary', { method:'POST', body:JSON.stringify(obj) });
             setBundleSummary(data);
-          }catch(e){ alert(e.message || 'Invalid JSON'); }
+            showToast('Bundle summarized');
+            setGuide(false);
+          }catch(e){ showToast(e.message || 'Invalid JSON'); }
         }
         function importFileChanged(e){
           const f = e.target.files?.[0]; if(!f) return;
           const reader = new FileReader();
           reader.onload = ()=>{
-            try{
-              const txt = String(reader.result||''); JSON.parse(txt);
-              setBundleText(txt);
-            }catch{ alert('Invalid JSON file'); }
+            try{ const txt=String(reader.result||''); JSON.parse(txt); setBundleText(txt); showToast(`Imported ${f.name}`); }
+            catch{ showToast('Invalid JSON file'); }
           };
           reader.readAsText(f); e.target.value='';
         }
         function downloadBundle(filename='fhir-bundle.json'){
-          try{ const txt=bundleText.trim(); JSON.parse(txt); downloadText(filename, txt); }
-          catch{ alert('Bundle is not valid JSON'); }
+          try{ const txt=bundleText.trim(); JSON.parse(txt); downloadText(filename, txt); showToast('Downloaded bundle'); }
+          catch{ showToast('Bundle is not valid JSON'); }
         }
         async function exportFHIR(){
           try{
@@ -238,31 +266,31 @@
             catch{ res = await http(apiBase, '/export/bundle', { method:'POST', body:JSON.stringify(obj) }); }
             const data = typeof res === 'string' ? res : JSON.stringify(res, null, 2);
             downloadText('fhir-bundle-export.json', data, 'application/fhir+json');
-          }catch{ downloadBundle('fhir-bundle-export.json'); }
+            showToast('Exported via API');
+          }catch{ downloadBundle('fhir-bundle-export.json'); showToast('Exported locally'); }
         }
 
-        /* Exports */
+        /* exports */
         const [buildingCodes, setBuildingCodes] = useState(false);
         function exportValueSet(fmt='json'){
-          if(!vs) return alert('Load ValueSet first (or wait)');
+          if(!vs) return showToast('Load ValueSet first (or wait)');
           if(fmt==='json') return downloadText('valueset.json', JSON.stringify(vs, null, 2));
           if(fmt==='ndjson') return downloadText('valueset.ndjson', toNDJSON([vs]), 'application/x-ndjson');
           if(fmt==='csv'){ const rows=(vs.includes||[]).map(code=>({code})); return downloadText('valueset.csv', toCSV(rows, ['code']), 'text/csv'); }
         }
         function exportConceptMap(fmt='json'){
-          if(!cmap) return alert('Load ConceptMap first (or wait)');
+          if(!cmap) return showToast('Load ConceptMap first (or wait)');
           if(fmt==='json') return downloadText('conceptmap.json', JSON.stringify(cmap, null, 2));
           if(fmt==='ndjson') return downloadText('conceptmap.ndjson', toNDJSON(cmap.mappings||[]), 'application/x-ndjson');
           if(fmt==='csv'){ const rows=(cmap.mappings||[]).map(m=>({sourceCode:m.sourceCode, targetCode:m.targetCode, relation:m.relation})); return downloadText('conceptmap.csv', toCSV(rows, ['sourceCode','targetCode','relation']), 'text/csv'); }
         }
         async function exportCodesCSV(){
-          if(!vs) return alert('ValueSet not loaded yet');
+          if(!vs) return showToast('ValueSet not loaded yet');
           setBuildingCodes(true);
           try{
             const all = vs.includes || [];
             const out = [];
-            const limit = 8;
-            let i=0;
+            const limit = 8; let i=0;
             async function worker(){
               while(i<all.length){
                 const idx=i++; const code=all[idx];
@@ -274,6 +302,7 @@
             }
             await Promise.all(new Array(limit).fill(0).map(worker));
             downloadText('codes.csv', toCSV(out, ['code','display','system','exists','inValueSet']), 'text/csv');
+            showToast(`Exported ${out.length} codes`);
           } finally { setBuildingCodes(false); }
         }
 
@@ -292,7 +321,7 @@
               </div>
             </header>
 
-            {/* Search + Filter */}
+            {/* SEARCH + FILTER */}
             <section className="grid md:grid-cols-2 gap-5">
               <div className="card space-y-3">
                 <div className="flex items-center justify-between">
@@ -300,7 +329,7 @@
                   <span className="hint">Type to search, filter by category, then Insert or Validate</span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                  <input className="input md:col-span-2" placeholder="Try: Amlapitta, Vamana, Hypertension, Asthma…" value={q} onChange={e=>setQ(e.target.value)} />
+                  <input className="input md:col-span-2" placeholder="Try: Common cold, Amlapitta, Vamana, Hypertension…" value={q} onChange={e=>setQ(e.target.value)} />
                   <select className="input" value={category} onChange={e=>setCategory(e.target.value)}>
                     {categories.map(c=><option key={c} value={c}>{c}</option>)}
                   </select>
@@ -326,7 +355,7 @@
                 ) : null}
               </div>
 
-              {/* Validation */}
+              {/* VALIDATION */}
               <div className="card space-y-3">
                 <div className="flex items-center justify-between">
                   <h2 className="title">Validation List</h2>
@@ -335,6 +364,14 @@
                     <button className="btn" onClick={clearVal}>Clear</button>
                   </div>
                 </div>
+
+                {guide && (
+                  <div className="guide flex items-center justify-between gap-3">
+                    <div className="text-sm">Next step: <strong>Summarize your Bundle</strong> to see Patient/Encounter/Conditions summary.</div>
+                    <a href="#bundle" className="btn btn-soft">Go to Bundle</a>
+                  </div>
+                )}
+
                 {valList.length ? (
                   <div className="overflow-auto">
                     <table className="table">
@@ -359,7 +396,7 @@
               </div>
             </section>
 
-            {/* ValueSet & ConceptMap */}
+            {/* VALUESET / CONCEPTMAP */}
             <section className="grid md:grid-cols-2 gap-5">
               <div className="card space-y-3">
                 <div className="flex items-center justify-between">
@@ -389,19 +426,11 @@
               </div>
             </section>
 
-            {/* FHIR Bundle */}
-            <section className="card space-y-3">
-              <div className="flex items-center justify-between flex-wrap gap-3">
-                <h2 className="title">FHIR Bundle → Summary</h2>
-                <div className="flex gap-2 flex-wrap">
-                  <input type="file" className="hidden" ref={(el)=>{window._fileInput=el;}} onChange={importFileChanged} accept="application/json,.json"/>
-                  <button className="btn" onClick={()=>window._fileInput?.click()}>Import FHIR (JSON)</button>
-                  <button className="btn" onClick={()=>downloadBundle('fhir-bundle.json')}>Download FHIR</button>
-                  <button className="btn" onClick={exportFHIR}>Export FHIR</button>
-                  <button className="btn btn-primary" onClick={summarizeBundle}>Summarize Bundle</button>
-                </div>
-              </div>
+            {/* FHIR BUNDLE */}
+            <section id="bundle" className="card space-y-4">
+              <h2 className="title">FHIR Bundle → Summary</h2>
 
+              <!-- editor + preview -->
               <div className="grid md:grid-cols-2 gap-4">
                 <textarea className="input mono min-h-[280px]" value={bundleText} onChange={e=>setBundleText(e.target.value)} />
                 <div className="space-y-2">
@@ -413,12 +442,23 @@
                           <button className="btn" onClick={()=>downloadText('bundle-summary.json', JSON.stringify(bundleSummary,null,2))}>Download Summary</button>
                         </div>
                       </>
-                    : <div className="text-sm text-slate-500">Paste or import a FHIR Bundle JSON, then click <span className="font-semibold">Summarize Bundle</span>.</div>}
+                    : <div className="text-sm text-slate-500">Paste/import a FHIR Bundle JSON, then click <span className="font-semibold">Summarize Bundle</span>.</div>}
                 </div>
+              </div>
+
+              <!-- action buttons moved to the very bottom -->
+              <div className="pt-2 border-t border-slate-200 flex flex-wrap gap-2 justify-end">
+                <input type="file" className="hidden" ref={(el)=>{window._fileInput=el;}} onChange={importFileChanged} accept="application/json,.json"/>
+                <button className="btn" onClick={()=>window._fileInput?.click()}>Import FHIR (JSON)</button>
+                <button className="btn" onClick={()=>downloadBundle('fhir-bundle.json')}>Download FHIR</button>
+                <button className="btn" onClick={exportFHIR}>Export FHIR</button>
+                <button className="btn btn-primary" onClick={summarizeBundle}>Summarize Bundle</button>
               </div>
             </section>
 
             <footer className="text-xs text-slate-500 text-center">© SAARTHI — Demo dataset for evaluation only</footer>
+
+            <div className={`toast mono text-sm ${toast ? 'show' : ''}`}>{toast}</div>
           </div>
         );
       }
