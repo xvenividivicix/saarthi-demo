@@ -5,79 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>SAARTHI Starter UI</title>
 
-    <!-- Tailwind (for quick styling) -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- React 18 (UMD) + Babel so JSX works without a build step -->
+    <!-- React 18 UMD + Babel so JSX works without a build step -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
-      .card { background:#fff; border-radius:16px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); padding:24px; border:1px solid #eef2f7; }
-      .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:8px 14px; font-weight:600; border:1px solid #e5e7eb; border-radius:12px; transition:all .15s; }
+      :root {
+        --fg: #0f172a;
+        --muted: #475569;
+        --line: #e5e7eb;
+        --card: #ffffff;
+        --bg: #f8fafc;
+        --brand: #2563eb;
+      }
+      body { color: var(--fg); background: var(--bg); }
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+      .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; font-weight:600; border-radius: 12px; border:1px solid var(--line); background:#fff; transition: all .15s; }
       .btn:hover { transform: translateY(-1px); }
-      .btn-primary { background:#2563eb; color:#fff; border-color:#1d4ed8; }
-      .btn-outline { background:#fff; color:#374151; }
-      .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border:1px solid #e5e7eb; border-radius:999px; font-size:12px; background:#f3f4f6; color:#374151; }
-      .input { border:1px solid #e5e7eb; border-radius:12px; padding:10px 12px; outline:none; width:100%; }
+      .btn-primary { background: var(--brand); color: #fff; border-color: #1d4ed8; }
+      .btn-ghost { background: #fff; }
+      .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border:1px solid var(--line); border-radius:999px; font-size:12px; background:#f1f5f9; color:#334155; }
+      .input { border:1px solid var(--line); border-radius:12px; padding:10px 12px; outline:none; width:100%; background:#fff; }
       .input:focus { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,0.15); }
-      .kbd { font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; font-size:12px; background:#f3f4f6; border:1px solid #e5e7eb; padding:2px 6px; border-radius:6px; }
-      .mono { font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+      .kbd { font-size:12px; background:#f1f5f9; border:1px solid var(--line); padding:2px 6px; border-radius:6px; }
+      .toolbar { display:flex; gap:10px; flex-wrap:wrap; }
+      .toast { position: fixed; right: 16px; bottom: 16px; background: #111827; color:#fff; padding: 12px 14px; border-radius:12px; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+      .link { color: var(--brand); text-decoration: underline; }
     </style>
   </head>
-  <body class="bg-slate-50">
+  <body>
     <div id="root"></div>
 
     <script type="text/babel" data-presets="react">
-      const { useEffect, useMemo, useState } = React;
+      const { useEffect, useMemo, useRef, useState } = React;
 
-      // Allow ?api=https://your-api.onrender.com, else fallback to localhost for local dev
+      // Allow ?api=https://your-api.onrender.com; fallback to localhost for dev
       const API_BASE = (new URLSearchParams(location.search).get('api')) || 'http://localhost:8000';
 
+      // fetch helper — only add Content-Type when sending a body
       async function api(path, opts = {}) {
-  // Only add Content-Type for requests with a body (e.g., POST)
-  const hasBody = typeof opts.body !== "undefined";
-  const headers = hasBody ? { "Content-Type": "application/json" } : {};
-
-  const res = await fetch(API_BASE + path, {
-    ...opts,
-    headers: { ...headers, ...(opts.headers || {}) },
-  });
-  if (!res.ok) {
-    const txt = await res.text().catch(() => "");
-    throw new Error(`HTTP ${res.status} ${res.statusText} — ${txt || path}`);
-  }
-  const ct = res.headers.get("content-type") || "";
-  return ct.includes("application/json") ? res.json() : res.text();
-}
+        const hasBody = typeof opts.body !== "undefined";
+        const headers = hasBody ? { "Content-Type": "application/json" } : {};
+        const res = await fetch(API_BASE + path, { ...opts, headers: { ...headers, ...(opts.headers || {}) } });
+        if (!res.ok) {
+          let txt = "";
+          try { txt = await res.text(); } catch {}
+          throw new Error(`HTTP ${res.status} ${res.statusText}${txt ? " — "+txt : ""}`);
+        }
+        const ct = res.headers.get("content-type") || "";
+        return ct.includes("application/json") ? res.json() : res.text();
+      }
 
       function CodeBlock({ data }) {
         const text = typeof data === "string" ? data : JSON.stringify(data, null, 2);
         return (
-          <pre className="mono text-xs bg-slate-50 border border-slate-200 rounded-xl p-3 overflow-auto max-h-96">
+          <pre className="mono text-xs bg-slate-50 border border-slate-200 rounded-xl p-3 overflow-auto max-h-96 whitespace-pre-wrap">
 {String(text)}
           </pre>
         );
       }
 
-      function SectionTitle({ children }) {
-        return <h2 className="text-lg font-semibold mb-2">{children}</h2>;
+      function useToast() {
+        const [msg, setMsg] = useState("");
+        function show(m) { setMsg(m); setTimeout(()=> setMsg(""), 3200); }
+        return { msg, show };
       }
 
       function App() {
-        const [error, setError] = useState("");
+        const { msg, show } = useToast();
+
         const [pingOk, setPingOk] = useState(false);
+        useEffect(() => {
+          // hit a small JSON route for health
+          fetch(API_BASE + "/openapi.json").then(r => setPingOk(r.ok)).catch(()=> setPingOk(false));
+        }, []);
 
         // Search
         const [q, setQ] = useState("");
         const [codes, setCodes] = useState([]);
 
+        async function doSearch() {
+          try {
+            setCodes([]);
+            const data = await api(`/codes/search?q=${encodeURIComponent(q)}`);
+            setCodes(data || []);
+          } catch (e) { show(e.message); }
+        }
+
         // ValueSet & ConceptMap
         const [vs, setVs] = useState(null);
         const [cmap, setCmap] = useState(null);
+        async function loadVS(){ try { setVs(await api("/valueset")); } catch(e){ show(e.message); } }
+        async function loadCMap(){ try { setCmap(await api("/conceptmap")); } catch(e){ show(e.message); } }
 
-        // Bundle summary demo
+        // FHIR Bundle editor
         const [bundleText, setBundleText] = useState(`{
   "resourceType": "Bundle",
   "type": "collection",
@@ -94,63 +120,97 @@
 }`);
         const [bundleSummary, setBundleSummary] = useState(null);
 
-        useEffect(() => {
-          // quick connectivity check using /docs (always exists) or a known GET
-          fetch(API_BASE + "/valueset", { method: "GET" })
-            .then(r => setPingOk(r.ok))
-            .catch(() => setPingOk(false));
-        }, []);
-
-        async function doSearch() {
-          setError("");
-          setCodes([]);
-          try {
-            const data = await api(`/codes/search?q=${encodeURIComponent(q)}`);
-            setCodes(data || []);
-          } catch (e) { setError(String(e)); }
-        }
-
-        async function loadVS() {
-          setError("");
-          setVs(null);
-          try { setVs(await api("/valueset")); }
-          catch (e) { setError(String(e)); }
-        }
-
-        async function loadCMap() {
-          setError("");
-          setCmap(null);
-          try { setCmap(await api("/conceptmap")); }
-          catch (e) { setError(String(e)); }
-        }
-
         async function summarizeBundle() {
-          setError("");
-          setBundleSummary(null);
           try {
             const obj = JSON.parse(bundleText);
-            const data = await api("/bundle/summary", {
-              method: "POST",
-              body: JSON.stringify(obj)
-            });
+            const data = await api("/bundle/summary", { method: "POST", body: JSON.stringify(obj) });
             setBundleSummary(data);
-          } catch (e) { setError(String(e)); }
+            show("Bundle summarized");
+          } catch (e) { show(e.message || "Invalid JSON"); }
+        }
+
+        // Import: read .json and load into editor
+        const fileRef = useRef(null);
+        function clickImport(){ fileRef.current?.click(); }
+        function importFileChanged(e){
+          const f = e.target.files?.[0];
+          if (!f) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              const txt = String(reader.result || "");
+              JSON.parse(txt); // basic validation
+              setBundleText(txt);
+              show(`Imported ${f.name}`);
+            } catch {
+              show("Invalid JSON file");
+            }
+          };
+          reader.readAsText(f);
+          // reset so selecting same file again still triggers change
+          e.target.value = "";
+        }
+
+        // Download current bundle as JSON
+        function downloadBundle(filename = "fhir-bundle.json") {
+          try {
+            const txt = bundleText.trim();
+            JSON.parse(txt); // validate
+            const blob = new Blob([txt], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url; a.download = filename; a.click();
+            URL.revokeObjectURL(url);
+            show("Downloaded bundle");
+          } catch {
+            show("Bundle is not valid JSON");
+          }
+        }
+
+        // Try API export if available; fall back to download
+        async function exportFHIR() {
+          try {
+            const obj = JSON.parse(bundleText);
+            // Common patterns (adjust if your API has a specific path)
+            // 1) /export/fhir/bundle
+            let res;
+            try {
+              res = await api("/export/fhir/bundle", { method: "POST", body: JSON.stringify(obj) });
+            } catch {
+              // 2) /export/bundle
+              res = await api("/export/bundle", { method: "POST", body: JSON.stringify(obj) });
+            }
+            // If API returns a Bundle or a string, let user download it
+            const data = typeof res === "string" ? res : JSON.stringify(res, null, 2);
+            const blob = new Blob([data], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url; a.download = "fhir-bundle-export.json"; a.click();
+            URL.revokeObjectURL(url);
+            show("Exported via API");
+          } catch (e) {
+            // graceful fallback
+            downloadBundle("fhir-bundle-export.json");
+            show("Exported locally (fallback)");
+          }
         }
 
         return (
-          <div className="max-w-5xl mx-auto p-6 space-y-5">
+          <div className="max-w-6xl mx-auto p-6 space-y-6">
             <header className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-bold">SAARTHI Starter UI</h1>
-                <p className="text-slate-600 mt-1">API: <span className="badge">{API_BASE}</span></p>
+                <h1 className="text-2xl md:text-3xl font-bold tracking-tight">SAARTHI Starter UI</h1>
+                <p className="text-sm text-slate-600 mt-1">
+                  API: <span className="badge">{API_BASE}</span>
+                </p>
               </div>
               <div className={`badge ${pingOk ? "border-green-200 bg-green-50 text-green-700" : "border-amber-200 bg-amber-50 text-amber-700"}`}>
-                {pingOk ? "API reachable" : "Waiting for API…"}
+                {pingOk ? "API online" : "Waiting for API…"}
               </div>
             </header>
 
-            <div className="card space-y-3">
-              <SectionTitle>Search Codes</SectionTitle>
+            <section className="card space-y-3">
+              <h2 className="text-lg font-semibold">Search Codes</h2>
               <div className="flex gap-2">
                 <input
                   className="input"
@@ -167,46 +227,58 @@
                   <CodeBlock data={codes}/>
                 </>
               ) : <div className="text-sm text-slate-500">No results yet. Enter a query and press <span className="kbd">Enter</span> or click <span className="kbd">Search</span>.</div>}
-            </div>
+            </section>
 
-            <div className="grid md:grid-cols-2 gap-5">
+            <section className="grid md:grid-cols-2 gap-5">
               <div className="card space-y-3">
-                <SectionTitle>ValueSet (demo)</SectionTitle>
-                <div className="flex gap-2">
-                  <button className="btn btn-outline" onClick={loadVS}>Load ValueSet</button>
+                <h2 className="text-lg font-semibold">ValueSet (demo)</h2>
+                <div className="toolbar">
+                  <button className="btn btn-ghost" onClick={loadVS}>Load ValueSet</button>
                 </div>
                 {vs && <CodeBlock data={vs}/>}
               </div>
 
               <div className="card space-y-3">
-                <SectionTitle>ConceptMap (demo)</SectionTitle>
-                <div className="flex gap-2">
-                  <button className="btn btn-outline" onClick={loadCMap}>Load ConceptMap</button>
+                <h2 className="text-lg font-semibold">ConceptMap (demo)</h2>
+                <div className="toolbar">
+                  <button className="btn btn-ghost" onClick={loadCMap}>Load ConceptMap</button>
                 </div>
                 {cmap && <CodeBlock data={cmap}/>}
               </div>
-            </div>
+            </section>
 
-            <div className="card space-y-3">
-              <SectionTitle>FHIR Bundle → Summary</SectionTitle>
+            <section className="card space-y-3">
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <h2 className="text-lg font-semibold">FHIR Bundle → Summary</h2>
+                <div className="toolbar">
+                  <input ref={fileRef} type="file" accept="application/json,.json" className="hidden" onChange={importFileChanged}/>
+                  <button className="btn" onClick={clickImport}>Import FHIR (JSON)</button>
+                  <button className="btn" onClick={()=>downloadBundle("fhir-bundle.json")}>Download FHIR</button>
+                  <button className="btn" onClick={exportFHIR}>Export FHIR</button>
+                  <button className="btn btn-primary" onClick={summarizeBundle}>Summarize Bundle</button>
+                </div>
+              </div>
+
               <div className="grid md:grid-cols-2 gap-4">
                 <textarea
-                  className="input mono min-h-[220px]"
+                  className="input mono min-h-[260px]"
                   value={bundleText}
                   onChange={e=>setBundleText(e.target.value)}
                 />
                 <div className="space-y-2">
-                  <button className="btn btn-primary" onClick={summarizeBundle}>Summarize Bundle</button>
                   {bundleSummary
-                    ? <CodeBlock data={bundleSummary}/>
-                    : <div className="text-sm text-slate-500">Paste/edit a small FHIR Bundle and click <span className="kbd">Summarize Bundle</span>.</div>}
+                    ? <>
+                        <div className="text-sm text-slate-600">Summary:</div>
+                        <CodeBlock data={bundleSummary}/>
+                      </>
+                    : <div className="text-sm text-slate-500">Paste or import a FHIR Bundle (JSON). Click <span className="kbd">Summarize Bundle</span>.</div>}
                 </div>
               </div>
-            </div>
+            </section>
 
-            {error && <div className="bg-red-50 text-red-700 border border-red-200 rounded-xl p-3">{error}</div>}
+            <footer className="text-xs text-slate-500 text-center">© SAARTHI Starter Kit — Demo subset for evaluation only</footer>
 
-            <footer className="text-xs text-slate-500">© SAARTHI Starter Kit — Demo subset for evaluation only</footer>
+            {msg && <div className="toast mono text-sm">{msg}</div>}
           </div>
         );
       }
