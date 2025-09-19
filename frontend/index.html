@@ -1,144 +1,212 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>SAARTHI Starter UI</title>
+
+    <!-- Tailwind (for quick styling) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="importmap">
-      { "imports": { "react": "https://esm.sh/react@18", "react-dom/client": "https://esm.sh/react-dom@18/client" } }
-    </script>
+
+    <!-- React 18 (UMD) + Babel so JSX works without a build step -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
     <style>
-      .card { background:white; border-radius:16px; box-shadow: 0 6px 24px rgba(0,0,0,0.07); padding: 24px; border: 1px solid #eef2f7; }
-      .btn { display:inline-flex; align-items:center; justify-content:center; border-radius:12px; padding:8px 14px; font-weight:600; border:1px solid #e5e7eb; }
-      .btn-primary { background:#2563eb; color:white; border-color:#1d4ed8; }
-      .btn-outline { background:white; color:#374151; }
-      .badge { display:inline-flex; align-items:center; gap:6px; padding:2px 8px; border-radius:999px; font-size:12px; background:#f3f4f6; color:#374151; }
-      .input { width:100%; border:1px solid #d1d5db; border-radius:12px; padding:10px 12px; outline:none; }
-      .input:focus { box-shadow:0 0 0 3px rgba(37,99,235,0.25); border-color:#2563eb; }
-      .label { font-size:14px; font-weight:600; color:#374151; margin-bottom:6px; display:block; }
-      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+      .card { background:#fff; border-radius:16px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); padding:24px; border:1px solid #eef2f7; }
+      .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:8px 14px; font-weight:600; border:1px solid #e5e7eb; border-radius:12px; transition:all .15s; }
+      .btn:hover { transform: translateY(-1px); }
+      .btn-primary { background:#2563eb; color:#fff; border-color:#1d4ed8; }
+      .btn-outline { background:#fff; color:#374151; }
+      .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border:1px solid #e5e7eb; border-radius:999px; font-size:12px; background:#f3f4f6; color:#374151; }
+      .input { border:1px solid #e5e7eb; border-radius:12px; padding:10px 12px; outline:none; width:100%; }
+      .input:focus { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,0.15); }
+      .kbd { font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; font-size:12px; background:#f3f4f6; border:1px solid #e5e7eb; padding:2px 6px; border-radius:6px; }
+      .mono { font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; }
     </style>
   </head>
   <body class="bg-slate-50">
     <div id="root"></div>
-    <script type="module">
-      import React, { useState } from "react";
-      import { createRoot } from "react-dom/client";
+
+    <script type="text/babel" data-presets="react">
+      const { useEffect, useMemo, useState } = React;
+
+      // Allow ?api=https://your-api.onrender.com, else fallback to localhost for local dev
       const API_BASE = (new URLSearchParams(location.search).get('api')) || 'http://localhost:8000';
 
-      const CodeBlock = ({data}) => (
-        <pre className="mono text-xs bg-slate-900 text-slate-100 p-4 rounded-xl overflow-auto max-h-72">{JSON.stringify(data,null,2)}</pre>
-      );
+      async function api(path, opts = {}) {
+        const res = await fetch(API_BASE + path, { headers: { "Content-Type": "application/json" }, ...opts });
+        if (!res.ok) {
+          const txt = await res.text().catch(()=> "");
+          throw new Error(`HTTP ${res.status} ${res.statusText} — ${txt || path}`);
+        }
+        // Some endpoints may return plain text; try JSON first then fallback
+        const ct = res.headers.get("content-type") || "";
+        if (ct.includes("application/json")) return res.json();
+        return res.text();
+      }
 
-      function App(){
-        const [chiefComplaint, setChief] = useState("fever, body ache");
-        const [diagnosisText, setDx] = useState("Vataja Jwara");
-        const [therapyText, setTx] = useState("Shamana chikitsa");
-        const [auto, setAuto] = useState(null);
-        const [valid, setValid] = useState(null);
-        const [bundle, setBundle] = useState(null);
-        const [roundtrip, setRoundtrip] = useState(null);
-        const [loading, setLoading] = useState(false);
+      function CodeBlock({ data }) {
+        const text = typeof data === "string" ? data : JSON.stringify(data, null, 2);
+        return (
+          <pre className="mono text-xs bg-slate-50 border border-slate-200 rounded-xl p-3 overflow-auto max-h-96">
+{String(text)}
+          </pre>
+        );
+      }
+
+      function SectionTitle({ children }) {
+        return <h2 className="text-lg font-semibold mb-2">{children}</h2>;
+      }
+
+      function App() {
         const [error, setError] = useState("");
+        const [pingOk, setPingOk] = useState(false);
 
-        async function call(path, opts){
-          setLoading(true); setError("");
-          try{
-            const res = await fetch(API_BASE + path, {headers: {"Content-Type":"application/json"}, ...opts});
-            if(!res.ok) throw new Error("HTTP " + res.status);
-            return await res.json();
-          }catch(e){ setError(e.message); return null; } finally { setLoading(false); }
+        // Search
+        const [q, setQ] = useState("");
+        const [codes, setCodes] = useState([]);
+
+        // ValueSet & ConceptMap
+        const [vs, setVs] = useState(null);
+        const [cmap, setCmap] = useState(null);
+
+        // Bundle summary demo
+        const [bundleText, setBundleText] = useState(`{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    { "resource": { "resourceType": "Patient", "id": "pat-1" } },
+    { "resource": { "resourceType": "Encounter", "id": "enc-1" } },
+    { "resource": { "resourceType": "Condition",
+      "code": { "coding": [ { "system":"urn:icd:icd11:tm", "code":"TM2-0004", "display":"Amlapitta" } ] } } },
+    { "resource": { "resourceType": "Procedure",
+      "code": { "coding": [ { "system":"urn:icd:icd11:tm", "code":"TM2-PROC-003", "display":"Vamana Karma" } ] } } },
+    { "resource": { "resourceType": "Observation",
+      "code": { "text": "Dosha Assessment" }, "valueString": "Pitta dominant" } }
+  ]
+}`);
+        const [bundleSummary, setBundleSummary] = useState(null);
+
+        useEffect(() => {
+          // quick connectivity check using /docs (always exists) or a known GET
+          fetch(API_BASE + "/docs", { method: "GET" })
+            .then(r => setPingOk(r.ok))
+            .catch(() => setPingOk(false));
+        }, []);
+
+        async function doSearch() {
+          setError("");
+          setCodes([]);
+          try {
+            const data = await api(`/codes/search?q=${encodeURIComponent(q)}`);
+            setCodes(data || []);
+          } catch (e) { setError(String(e)); }
         }
 
-        async function doAutocode(){
-          const payload = { encounter: { patientRef: "patient-123", encounterRef:"enc-789",
-            chiefComplaint, diagnosisText, therapyText, observations:[{code:"temp", value:"38.2 C"}],
-            context: { system:"urn:icd:icd11:tm", language:"en-IN" } } };
-          const data = await call("/autocode", {method:"POST", body: JSON.stringify(payload)});
-          setAuto(data);
+        async function loadVS() {
+          setError("");
+          setVs(null);
+          try { setVs(await api("/valueset")); }
+          catch (e) { setError(String(e)); }
         }
-        async function doValidate(){
-          if(!auto) return;
-          const codes = [...(auto?.conditions||[]).map(x=>x.code), ...(auto?.procedures||[]).map(x=>x.code)];
-          const data = await call("/codes/validate", {method:"POST", body: JSON.stringify({system:"urn:icd:icd11:tm", codes, valueSet:"vs-ayush-demo-2025-05"})});
-          setValid(data);
+
+        async function loadCMap() {
+          setError("");
+          setCmap(null);
+          try { setCmap(await api("/conceptmap")); }
+          catch (e) { setError(String(e)); }
         }
-        async function doExport(){
-          const conds = (auto?.conditions||[]).slice(0,1).map(x=>({code:x.code, display:x.display, system:"urn:icd:icd11:tm"}));
-          const procs = (auto?.procedures||[]).slice(0,1).map(x=>({code:x.code, display:x.display, system:"urn:icd:icd11:tm"}));
-          const data = await call("/export/fhir/bundle", {method:"POST", body: JSON.stringify({patientRef:"patient-123", encounterRef:"enc-789", conditions:conds, procedures:procs, observations:[{code:"temp", value:"38.2 C"}]})});
-          setBundle(data);
+
+        async function summarizeBundle() {
+          setError("");
+          setBundleSummary(null);
+          try {
+            const obj = JSON.parse(bundleText);
+            const data = await api("/bundle/summary", {
+              method: "POST",
+              body: JSON.stringify(obj)
+            });
+            setBundleSummary(data);
+          } catch (e) { setError(String(e)); }
         }
-        async function doImport(){ if(!bundle) return; const data = await call("/import/fhir/bundle", {method:"POST", body: JSON.stringify(bundle)}); setRoundtrip(data); }
 
         return (
-          <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
+          <div className="max-w-5xl mx-auto p-6 space-y-5">
             <header className="flex items-center justify-between">
               <div>
-                <div className="text-xs font-bold text-blue-600 uppercase tracking-wider">SAARTHI</div>
-                <h1 className="text-3xl font-extrabold text-slate-900">AYUSH Coding & FHIR Starter UI</h1>
-                <p className="text-slate-600">API: <span className="badge">{API_BASE}</span></p>
+                <h1 className="text-2xl font-bold">SAARTHI Starter UI</h1>
+                <p className="text-slate-600 mt-1">API: <span className="badge">{API_BASE}</span></p>
               </div>
-              <a className="btn btn-outline" href="http://localhost:8000/docs" target="_blank">Open Swagger →</a>
+              <div className={`badge ${pingOk ? "border-green-200 bg-green-50 text-green-700" : "border-amber-200 bg-amber-50 text-amber-700"}`}>
+                {pingOk ? "API reachable" : "Waiting for API…"}
+              </div>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="card">
-                <h2 className="text-xl font-bold mb-3">Encounter Input</h2>
-                <label className="label">Chief Complaint</label>
-                <input className="input mb-3" value={chiefComplaint} onChange={e=>setChief(e.target.value)}/>
-                <label className="label">Diagnosis Text</label>
-                <input className="input mb-3" value={diagnosisText} onChange={e=>setDx(e.target.value)}/>
-                <label className="label">Therapy Text</label>
-                <input className="input mb-3" value={therapyText} onChange={e=>setTx(e.target.value)}/>
+            <div className="card space-y-3">
+              <SectionTitle>Search Codes</SectionTitle>
+              <div className="flex gap-2">
+                <input
+                  className="input"
+                  placeholder="Try: Amlapitta, Sandhivata, Vamana, Nasya"
+                  value={q}
+                  onChange={e=>setQ(e.target.value)}
+                  onKeyDown={e=>{ if (e.key === "Enter") doSearch(); }}
+                />
+                <button className="btn btn-primary" onClick={doSearch}>Search</button>
+              </div>
+              {codes?.length ? (
+                <>
+                  <div className="text-sm text-slate-600">Results: <span className="mono">{codes.length}</span></div>
+                  <CodeBlock data={codes}/>
+                </>
+              ) : <div className="text-sm text-slate-500">No results yet. Enter a query and press <span className="kbd">Enter</span> or click <span className="kbd">Search</span>.</div>}
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-5">
+              <div className="card space-y-3">
+                <SectionTitle>ValueSet (demo)</SectionTitle>
                 <div className="flex gap-2">
-                  <button className="btn btn-primary" onClick={doAutocode} disabled={loading}>Auto-code</button>
-                  <button className="btn" onClick={async ()=>{
-                    const q = prompt("Search text for codes (e.g., 'Vataja Jwara')"); if(!q) return;
-                    const data = await call(`/codes/search?text=${encodeURIComponent(q)}`);
-                    alert("Top match: " + (data?.[0]?.display || "None"));
-                  }}>Search Codes</button>
+                  <button className="btn btn-outline" onClick={loadVS}>Load ValueSet</button>
                 </div>
+                {vs && <CodeBlock data={vs}/>}
               </div>
 
-              <div className="card">
-                <h2 className="text-xl font-bold mb-3">Code Suggestions</h2>
-                {auto ? <CodeBlock data={auto}/> : <p className="text-slate-500">Run Auto-code to see suggestions.</p>}
-                <div className="mt-3">
-                  <button className="btn btn-primary" onClick={doValidate} disabled={loading || !auto}>Validate Codes</button>
+              <div className="card space-y-3">
+                <SectionTitle>ConceptMap (demo)</SectionTitle>
+                <div className="flex gap-2">
+                  <button className="btn btn-outline" onClick={loadCMap}>Load ConceptMap</button>
                 </div>
+                {cmap && <CodeBlock data={cmap}/>}
               </div>
+            </div>
 
-              <div className="card">
-                <h2 className="text-xl font-bold mb-3">Validation Result</h2>
-                {valid ? <CodeBlock data={valid}/> : <p className="text-slate-500">Validate to see ValueSet checks.</p>}
-                <div className="mt-3">
-                  <button className="btn btn-primary" onClick={doExport} disabled={loading || !valid}>Export FHIR Bundle</button>
+            <div className="card space-y-3">
+              <SectionTitle>FHIR Bundle → Summary</SectionTitle>
+              <div className="grid md:grid-cols-2 gap-4">
+                <textarea
+                  className="input mono min-h-[220px]"
+                  value={bundleText}
+                  onChange={e=>setBundleText(e.target.value)}
+                />
+                <div className="space-y-2">
+                  <button className="btn btn-primary" onClick={summarizeBundle}>Summarize Bundle</button>
+                  {bundleSummary
+                    ? <CodeBlock data={bundleSummary}/>
+                    : <div className="text-sm text-slate-500">Paste/edit a small FHIR Bundle and click <span className="kbd">Summarize Bundle</span>.</div>}
                 </div>
-              </div>
-
-              <div className="card">
-                <h2 className="text-xl font-bold mb-3">FHIR Bundle & Round-trip</h2>
-                {bundle ? <CodeBlock data={bundle}/> : <p className="text-slate-500">Export FHIR to view JSON output.</p>}
-                <div className="mt-3 flex gap-2">
-                  <button className="btn btn-primary" onClick={doImport} disabled={loading || !bundle}>Import FHIR</button>
-                  <button className="btn" onClick={()=>{
-                    const blob = new Blob([JSON.stringify(bundle,null,2)], {type:"application/json"});
-                    const url = URL.createObjectURL(blob); const a = document.createElement('a');
-                    a.href = url; a.download = "saarthi-fhir-bundle.json"; a.click(); URL.revokeObjectURL(url);
-                  }} disabled={!bundle}>Download JSON</button>
-                </div>
-                {roundtrip && <div className="mt-3"><div className="badge">Round-trip parsed</div><CodeBlock data={roundtrip}/></div>}
               </div>
             </div>
 
             {error && <div className="bg-red-50 text-red-700 border border-red-200 rounded-xl p-3">{error}</div>}
+
             <footer className="text-xs text-slate-500">© SAARTHI Starter Kit — Demo subset for evaluation only</footer>
           </div>
         );
       }
-      createRoot(document.getElementById("root")).render(<App/>);
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
     </script>
   </body>
 </html>
